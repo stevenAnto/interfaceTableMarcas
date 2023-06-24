@@ -8,19 +8,80 @@ window.title("Mantenimiento tabla Zonas")
 
 #Agregando funcionalidad a los botones
 codigoInput= descripcionInput= estadoRegistroInput=""
+contador=0
+marFlaAct= False
+def adicionarF():
+    habilitar()
+
+
+def verificarFlag():
+    global marFlaAct
+    if codigoEntrada.get()!="":
+        marFlaAct=True
+
 def enviarBD():
+    global marFlaAct
+    verificarFlag()
+    print("masFlaAct",marFlaAct)
+    global contador
+    contador +=1
     codigoInput = codigoEntrada.get()
     descripcionInput=descripcionEntrada.get()
     estadoRegistroInput=estadoRegistroEntrada.get()
-    if codigoInput!="":
+    verificarFlag()
+    print("masFlaAct",marFlaAct)
+    if marFlaAct:
         print(codigoInput,descripcionInput,estadoRegistroInput)
+        enviarGrilla(contador,codigoInput,descripcionInput,estadoRegistroInput)
     else:
         print("Error")
+    blanqueoInputs()
+    deshabilitar()
+    marFlaAct=False
+    print("Termino de atualizar, y regreso al bandera",marFlaAct)
+    #blanqueo de inputs
+def cancelarBoton():
+    global marFlaAct
+    blanqueoInputs()
+    grilla.selection_remove(grilla.selection())
+    deshabilitar()
+    marFlaAct=False;
+
+def blanqueoInputs():
+    codigoEntrada.delete(0,tkinter.END)
+    descripcionEntrada.delete(0,tkinter.END)
+    estadoRegistroEntrada.delete(0,tkinter.END)
 
 def habilitar():
     codigoEntrada["state"]="normal"
     descripcionEntrada["state"]="normal"
-    estadoRegistroEntrada["state"]="normal"
+    estadoRegistroEntrada["state"]="disabled"
+
+def deshabilitar():
+    codigoEntrada["state"]="disabled"
+    descripcionEntrada["state"]="disabled"
+    estadoRegistroEntrada["state"]="disabled"
+
+def modificar():
+    seleccion = grilla.selection()
+    if seleccion:
+        #codigo
+        item1=seleccion[0]
+        valores = grilla.item(item1,"values")
+        print("el primero",item1)
+        print("Valores seleccionados",valores)
+        print(valores[0])
+        habilitar()
+        codigoEntrada.insert(0,valores[0])
+        descripcionEntrada.insert(0,valores[1])
+        estadoRegistroEntrada.insert(0,valores[2])
+    else:
+        print("no hay seleccion")
+    print(seleccion)
+
+def enviarGrilla(indice,codigoInput,descripcionInput,estadoRegistroInput):
+    grilla.insert("",tkinter.END,text=str(indice),values=(codigoInput,descripcionInput,estadoRegistroInput))
+
 
 
 #Instancio un objeto Frame, que sera parte de windon
@@ -45,7 +106,11 @@ estadoRegistro = tkinter.Label(registro, text="Estado Registro")
 
 codigoEntrada =tkinter.Entry(registro,width=10,state="disabled")
 descripcionEntrada =tkinter.Entry(registro,width=60,state="disabled")
-estadoRegistroEntrada =tkinter.Entry(registro,width=2,state="disabled")
+valorDefaul =tkinter.StringVar()
+valorDefaul.set("A")
+estadoRegistroEntrada =tkinter.Entry(registro,width=2,state="disabled",
+        textvariable=valorDefaul)
+#default
 
 codigo.grid(row=0,column=0, sticky="new")
 descripcion.grid(row=1,column=0, sticky="nswe")
@@ -57,22 +122,27 @@ descripcionEntrada.grid(row=1,column=1, sticky="we")
 estadoRegistroEntrada.grid(row=2,column=1,sticky="w")
 
 #agregamos un treeview al segundo frame tabla
-grilla = ttk.Treeview(tabla, columns=("descripcion","estado"))
+grilla = ttk.Treeview(tabla, columns=("codigo","descripcion","estado"))
+grilla.column("#0",width=5)
+grilla.column("codigo",width=60)
+grilla.column("descripcion",width=600)
+grilla.column("estado",width=60)
 
 #por defecto crea la primera columa
-grilla.heading("#0", text="Codigo")
+grilla.heading("#0", text="#")
 #pongo nombre  a las otras dos columnas
+grilla.heading("codigo", text="Codigo")
 grilla.heading("descripcion", text="Descripcion")
 grilla.heading("estado", text="Estado")
-
+grilla.insert("",tkinter.END,text="1",values=("001","Colgate","A"))
 grilla.grid(row=0,column=0)
 
 #agregamos widgets al tercer Frame botones
 
-btnAdicionar = tkinter.Button(botones, text="Adicionar", command=habilitar)
-btnModificar = tkinter.Button(botones, text="Modificar")
+btnAdicionar = tkinter.Button(botones, text="Adicionar", command=adicionarF)
+btnModificar = tkinter.Button(botones, text="Modificar", command=modificar)
 btnEliminar = tkinter.Button(botones, text="Eliminar")
-btnCancelar = tkinter.Button(botones, text="Cancelar")
+btnCancelar = tkinter.Button(botones, text="Cancelar", command=cancelarBoton)
 btnInactivar = tkinter.Button(botones, text="Inactivar")
 btnReactivar = tkinter.Button(botones, text="Reactivar")
 btnActualizar = tkinter.Button(botones, text="Actualizar", command=enviarBD)
@@ -80,7 +150,6 @@ btnSalir = tkinter.Button(botones, text="Salir")
 
 #posicionamos los widgets
 botones.columnconfigure((0, 1, 2,3), weight=1)
-
 btnAdicionar.grid(row=0,column=0,sticky="we")
 btnModificar.grid(row=0,column=1,sticky="we")
 btnEliminar.grid(row=0,column=2,sticky="we")
