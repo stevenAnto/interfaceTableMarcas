@@ -80,3 +80,5 @@ class FrameTabla(tkinter.LabelFrame):
         self.codigoEntrada["state"]="normal"
         self.descripcionEntrada["state"]="normal"
         self.estadoRegistroEntrada["state"]="normal"
+
+    def enviarBD(self):

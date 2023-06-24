@@ -1,5 +1,6 @@
 import tkinter
 from tkinter import ttk
+import backend as back
 #Instancio una ventana
 
 
@@ -31,6 +32,7 @@ def enviarBD():
     verificarFlag()
     print("masFlaAct",marFlaAct)
     if marFlaAct:
+        print("Estado de masFlaAct",marFlaAct)
         print(codigoInput,descripcionInput,estadoRegistroInput)
         enviarGrilla(contador,codigoInput,descripcionInput,estadoRegistroInput)
     else:
@@ -81,6 +83,17 @@ def modificar():
 
 def enviarGrilla(indice,codigoInput,descripcionInput,estadoRegistroInput):
     grilla.insert("",tkinter.END,text=str(indice),values=(codigoInput,descripcionInput,estadoRegistroInput))
+
+def llenarGrilla():
+    conexion = back.establecer_conexion()
+    registrosTodos = back.seleccionar_MARCA(conexion)
+    contadorGrilla=1
+    for registro in registrosTodos:
+        enviarGrilla(contadorGrilla,str(registro[0]),registro[2],registro[1])
+        contadorGrilla +=1
+    back.cerrar_conexion(conexion)
+
+
 
 
 
@@ -134,8 +147,9 @@ grilla.heading("#0", text="#")
 grilla.heading("codigo", text="Codigo")
 grilla.heading("descripcion", text="Descripcion")
 grilla.heading("estado", text="Estado")
-grilla.insert("",tkinter.END,text="1",values=("001","Colgate","A"))
+#grilla.insert("",tkinter.END,text="1",values=("001","Colgate","A"))
 grilla.grid(row=0,column=0)
+llenarGrilla()
 
 #agregamos widgets al tercer Frame botones
 
