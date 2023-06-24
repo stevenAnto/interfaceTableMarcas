@@ -22,10 +22,6 @@ def verificarFlag():
 
 def enviarBD():
     global marFlaAct
-    verificarFlag()
-    print("masFlaAct",marFlaAct)
-    global contador
-    contador +=1
     codigoInput = codigoEntrada.get()
     descripcionInput=descripcionEntrada.get()
     estadoRegistroInput=estadoRegistroEntrada.get()
@@ -34,7 +30,12 @@ def enviarBD():
     if marFlaAct:
         print("Estado de masFlaAct",marFlaAct)
         print(codigoInput,descripcionInput,estadoRegistroInput)
-        enviarGrilla(contador,codigoInput,descripcionInput,estadoRegistroInput)
+        conexion = back.establecer_conexion()
+        back.insertar_marca(conexion,int(codigoInput),
+            descripcionInput,estadoRegistroInput)
+        back.cerrar_conexion(conexion)
+        grilla.delete(*grilla.get_children())
+        llenarGrilla()
     else:
         print("Error")
     blanqueoInputs()
@@ -81,16 +82,26 @@ def modificar():
         print("no hay seleccion")
     print(seleccion)
 
-def enviarGrilla(indice,codigoInput,descripcionInput,estadoRegistroInput):
-    grilla.insert("",tkinter.END,text=str(indice),values=(codigoInput,descripcionInput,estadoRegistroInput))
+def enviarGrilla(codigoInput,descripcionInput,estadoRegistroInput):
+    grilla.insert("",tkinter.END,values=(codigoInput,descripcionInput,estadoRegistroInput))
+
 
 def llenarGrilla():
+    #error pro treeview vacio
+    if grilla.item(grilla.get_children()):
+        grilla.delete(*grilla.get_children())
     conexion = back.establecer_conexion()
     registrosTodos = back.seleccionar_MARCA(conexion)
-    contadorGrilla=1
+    contadorGrilla=0
     for registro in registrosTodos:
-        enviarGrilla(contadorGrilla,str(registro[0]),registro[2],registro[1])
+        enviarGrilla(str(registro[0]),registro[2],registro[1])
         contadorGrilla +=1
+    #solo para verficiar
+    filas = grilla.get_children()
+    for fila in filas:
+        indice = grilla.index(fila)
+        print(f"indice:{indice}")
+
     back.cerrar_conexion(conexion)
 
 
@@ -142,7 +153,6 @@ grilla.column("descripcion",width=600)
 grilla.column("estado",width=60)
 
 #por defecto crea la primera columa
-grilla.heading("#0", text="#")
 #pongo nombre  a las otras dos columnas
 grilla.heading("codigo", text="Codigo")
 grilla.heading("descripcion", text="Descripcion")
