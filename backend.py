@@ -52,16 +52,3 @@ def seleccionar_MARCA(conexion):
         return registros
     except mysql.connector.Error as error:
         print("Error al seleccionar registros de la tabla GZZ_MARCAS:", error)
-
-
-
-conexion=establecer_conexion()
-#if conexion is not None:
-    # Insertar registros en la tabla GZZ_MARCA
- #   insertar_marca(conexion, 1, 'Faber', 'A')
-  #  insertar_marca(conexion, 2, 'Layconsa', 'A')
-
-    # Seleccionar registros de la tabla GZZ_MARCA
-   # seleccionar_MARCA(conexion)
-
-cerrar_conexion(conexion)
