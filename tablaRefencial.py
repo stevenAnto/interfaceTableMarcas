@@ -11,22 +11,104 @@ window.title("Mantenimiento tabla Zonas")
 codigoInput= descripcionInput= estadoRegistroInput=""
 contador=0
 marFlaAct= False
-# si flaBotonActualizar es True entonces el boton Actualizar INSERT EN TABLCA si es FALSE UPDATE CAMPO
-flaBotonActualizar=True;
+#Debido a que la relacion de muchas funciones usan al boton actualizar,
+#Pondremos estados a todos los botones, asi el boton actualizar sabra que
+#que accion realizar
+estadosBotonActualizar=""
 def adicionarF():
+    global estadosBotonActualizar
+    estadosBotonActualizar="insertar"
+    print(f"estadosBotonActualizar {estadosBotonActualizar}")
     habilitar()
     blanqueoInputs()
+def eliminarF():
+    global estadosBotonActualizar
+    seleccion = grilla.selection()
+    if seleccion:
+        estadosBotonActualizar="eliminar"
+        print(f"estadosBotonActualizar {estadosBotonActualizar}")
+        #codigo
+        item1=seleccion[0]
+        valores = grilla.item(item1,"values")
+        habilitar()
+        codigoEntrada.insert(0,valores[0])
+        codigoEntrada["state"]="disabled"
+        descripcionEntrada.insert(0,valores[1])
+        descripcionEntrada["state"]="disabled"
+        valorDefaul.set("*")
+        estadoRegistroEntrada["state"]="disabled"
+    else:
+        print("no hay seleccion")
+    print(seleccion)
+def inactivarF():
+    global estadosBotonActualizar
+    seleccion = grilla.selection()
+    if seleccion:
+        estadosBotonActualizar="inactivar"
+        print(f"estadosBotonActualizar {estadosBotonActualizar}")
+        #codigo
+        item1=seleccion[0]
+        valores = grilla.item(item1,"values")
+        habilitar()
+        codigoEntrada.insert(0,valores[0])
+        codigoEntrada["state"]="disabled"
+        descripcionEntrada.insert(0,valores[1])
+        descripcionEntrada["state"]="disabled"
+        valorDefaul.set("I")
+        estadoRegistroEntrada["state"]="disabled"
+    else:
+        print("no hay seleccion")
+    print(seleccion)
+
+def reactivarF():
+    global estadosBotonActualizar
+    seleccion = grilla.selection()
+    if seleccion:
+        estadosBotonActualizar="reactivar"
+        print(f"estadosBotonActualizar {estadosBotonActualizar}")
+        #codigo
+        item1=seleccion[0]
+        valores = grilla.item(item1,"values")
+        habilitar()
+        codigoEntrada.insert(0,valores[0])
+        codigoEntrada["state"]="disabled"
+        descripcionEntrada.insert(0,valores[1])
+        descripcionEntrada["state"]="disabled"
+        valorDefaul.set("A")
+        estadoRegistroEntrada["state"]="disabled"
+    else:
+        print("no hay seleccion")
+    print(seleccion)
+def salirF():
+    window.destroy()
 
 
 def verificarFlag():
     global marFlaAct
     if codigoEntrada.get()!="" and descripcionEntrada.get()!="":
         marFlaAct=True
+def modificarF():
+    global estadosBotonActualizar
+    seleccion = grilla.selection()
+    if seleccion:
+        estadosBotonActualizar="update"
+        #codigo
+        item1=seleccion[0]
+        valores = grilla.item(item1,"values")
+        habilitar()
+        codigoEntrada.insert(0,valores[0])
+        codigoEntrada["state"]="disabled"
+        descripcionEntrada.insert(0,valores[1])
+        estadoRegistroEntrada.insert(0,valores[2])
+        estadoRegistroEntrada["state"]="disabled"
+    else:
+        print("no hay seleccion")
+    print(seleccion)
 
 
 def enviarBD():
     global marFlaAct
-    global flaBotonActualizar
+    global estadosBotonActualizar
     codigoInput = codigoEntrada.get()
     descripcionInput=descripcionEntrada.get()
     estadoRegistroInput=estadoRegistroEntrada.get()
@@ -34,18 +116,36 @@ def enviarBD():
     print("masFlaAct",marFlaAct)
     if marFlaAct :
         print("Estado de masFlaAct",marFlaAct)
-        if flaBotonActualizar:
-            print("entro a insertar")
-
+        if estadosBotonActualizar=="update":
+            print("entro a actualizar")
+            actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
+            adicionarF()
+        elif estadosBotonActualizar=="eliminar":
+            print("entro eliminar")
+            actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
+            blanqueoInputs()
+            adicionarF()
+            estadosBotonActualizar=""
+        elif estadosBotonActualizar=="inactivar":
+            print("entro Inactivar")
+            actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
+            adicionarF()
+            estadosBotonActualizar=""
+        elif estadosBotonActualizar=="reactivar":
+            print("entro Reactivar")
+            actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
+            adicionarF()
+            estadosBotonActualizar=""
+        elif estadosBotonActualizar=="insertar":
             print(codigoInput,descripcionInput,estadoRegistroInput)
             conexion = back.establecer_conexion()
             back.insertar_marca(conexion,int(codigoInput),
             descripcionInput,estadoRegistroInput)
             back.cerrar_conexion(conexion)
+            estadosBotonActualizar=""
+
         else:
-            print("entro a actualizar")
-            actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
-            adicionarF()
+            print("no tiene estado el boton")
         grilla.delete(*grilla.get_children())
         llenarGrilla()
 
@@ -60,10 +160,13 @@ def enviarBD():
     #blanqueo de inputs
 def cancelarBoton():
     global marFlaAct
+    global estadosBotonActualizar
     blanqueoInputs()
     grilla.selection_remove(grilla.selection())
+    valorDefaul.set("A")
     deshabilitar()
     marFlaAct=False;
+    estadosBotonActualizar=""
 
 def blanqueoInputs():
     print("entro a blanqueoInputs")
@@ -81,26 +184,6 @@ def deshabilitar():
     descripcionEntrada["state"]="disabled"
     estadoRegistroEntrada["state"]="disabled"
 
-def modificar():
-    global flaBotonActualizar
-    seleccion = grilla.selection()
-    if seleccion:
-        flaBotonActualizar=False;
-        #codigo
-        item1=seleccion[0]
-        valores = grilla.item(item1,"values")
-        print("el primero",item1)
-        print("Valores seleccionados",valores)
-        print(valores[0])
-        habilitar()
-        codigoEntrada.insert(0,valores[0])
-        codigoEntrada["state"]="disabled"
-        descripcionEntrada.insert(0,valores[1])
-        estadoRegistroEntrada.insert(0,valores[2])
-        estadoRegistroEntrada["state"]="disabled"
-    else:
-        print("no hay seleccion")
-    print(seleccion)
 def actualizarRegistro(codigo, nombre, estado):
     global flaBotonActualizar
     verificarFlag()
@@ -108,7 +191,6 @@ def actualizarRegistro(codigo, nombre, estado):
     back.actualizar_marcas(conexion,int(codigo),nombre,estado)
     back.cerrar_conexion(conexion)
     marFlaAct=False
-    flaBotonActualizar=False;
     codigoEntrada.delete(0,tkinter.END)
 
 
@@ -212,13 +294,13 @@ llenarGrilla()
 #agregamos widgets al tercer Frame botones
 
 btnAdicionar = tkinter.Button(botones, text="Adicionar", command=adicionarF)
-btnModificar = tkinter.Button(botones, text="Modificar", command=modificar)
-btnEliminar = tkinter.Button(botones, text="Eliminar")
+btnModificar = tkinter.Button(botones, text="Modificar", command=modificarF)
+btnEliminar = tkinter.Button(botones, text="Eliminar", command=eliminarF)
 btnCancelar = tkinter.Button(botones, text="Cancelar", command=cancelarBoton)
-btnInactivar = tkinter.Button(botones, text="Inactivar")
-btnReactivar = tkinter.Button(botones, text="Reactivar")
+btnInactivar = tkinter.Button(botones, text="Inactivar",command=inactivarF)
+btnReactivar = tkinter.Button(botones, text="Reactivar", command=reactivarF)
 btnActualizar = tkinter.Button(botones, text="Actualizar", command=enviarBD)
-btnSalir = tkinter.Button(botones, text="Salir")
+btnSalir = tkinter.Button(botones, text="Salir", command=salirF)
 
 #posicionamos los widgets
 botones.columnconfigure((0, 1, 2,3), weight=1)
