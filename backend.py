@@ -40,6 +40,7 @@ def insertar_marca(conexion, codigo, nombre, estado_registro):
         print("Registro insertado correctamente en la tabla GZZ_MARCAS.")
     except mysql.connector.Error as error:
         print("Error al insertar registro en la tabla GZZ_MARCAS:", error)
+        return error
 
 # Función para seleccionar todos los registros de la tabla GZZ_MARCA
 def seleccionar_MARCA(conexion):
@@ -52,3 +53,21 @@ def seleccionar_MARCA(conexion):
         return registros
     except mysql.connector.Error as error:
         print("Error al seleccionar registros de la tabla GZZ_MARCAS:", error)
+
+def actualizar_marcas(conexion, codigo, nombre , estado):
+    try:
+        cursor = conexion.cursor()
+        sql = "UPDATE GZZ_MARCAS SET MarNom = %s, MarEstReg = %s WHERE MarCod = %s"
+        valores = (nombre, estado, codigo)
+        cursor.execute(sql, valores)
+        conexion.commit()
+        print("Registro actualizado correctamente en la tabla GZZ_MARCAS.")
+    except mysql.connector.Error as error:
+        print("Error al actualizar registro en la tabla GZZ_MARCAS:", error)
+
+
+#conexion = establecer_conexion()
+
+#if conexion is not None:
+#    actualizar_marcas(conexion,1,"nueva Mars","I")
+#cerrar_conexion(conexion)

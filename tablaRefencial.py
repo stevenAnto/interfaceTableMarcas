@@ -11,33 +11,48 @@ window.title("Mantenimiento tabla Zonas")
 codigoInput= descripcionInput= estadoRegistroInput=""
 contador=0
 marFlaAct= False
+# si flaBotonActualizar es True entonces el boton Actualizar INSERT EN TABLCA si es FALSE UPDATE CAMPO
+flaBotonActualizar=True;
 def adicionarF():
     habilitar()
+    blanqueoInputs()
 
 
 def verificarFlag():
     global marFlaAct
-    if codigoEntrada.get()!="":
+    if codigoEntrada.get()!="" and descripcionEntrada.get()!="":
         marFlaAct=True
+
 
 def enviarBD():
     global marFlaAct
+    global flaBotonActualizar
     codigoInput = codigoEntrada.get()
     descripcionInput=descripcionEntrada.get()
     estadoRegistroInput=estadoRegistroEntrada.get()
     verificarFlag()
     print("masFlaAct",marFlaAct)
-    if marFlaAct:
+    if marFlaAct :
         print("Estado de masFlaAct",marFlaAct)
-        print(codigoInput,descripcionInput,estadoRegistroInput)
-        conexion = back.establecer_conexion()
-        back.insertar_marca(conexion,int(codigoInput),
+        if flaBotonActualizar:
+            print("entro a insertar")
+
+            print(codigoInput,descripcionInput,estadoRegistroInput)
+            conexion = back.establecer_conexion()
+            back.insertar_marca(conexion,int(codigoInput),
             descripcionInput,estadoRegistroInput)
-        back.cerrar_conexion(conexion)
+            back.cerrar_conexion(conexion)
+        else:
+            print("entro a actualizar")
+            actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
+            adicionarF()
         grilla.delete(*grilla.get_children())
         llenarGrilla()
+
     else:
+        mostrarVentanaEmergente("marFlaAct")
         print("Error")
+
     blanqueoInputs()
     deshabilitar()
     marFlaAct=False
@@ -51,6 +66,7 @@ def cancelarBoton():
     marFlaAct=False;
 
 def blanqueoInputs():
+    print("entro a blanqueoInputs")
     codigoEntrada.delete(0,tkinter.END)
     descripcionEntrada.delete(0,tkinter.END)
     estadoRegistroEntrada.delete(0,tkinter.END)
@@ -66,8 +82,10 @@ def deshabilitar():
     estadoRegistroEntrada["state"]="disabled"
 
 def modificar():
+    global flaBotonActualizar
     seleccion = grilla.selection()
     if seleccion:
+        flaBotonActualizar=False;
         #codigo
         item1=seleccion[0]
         valores = grilla.item(item1,"values")
@@ -76,11 +94,24 @@ def modificar():
         print(valores[0])
         habilitar()
         codigoEntrada.insert(0,valores[0])
+        codigoEntrada["state"]="disabled"
         descripcionEntrada.insert(0,valores[1])
         estadoRegistroEntrada.insert(0,valores[2])
+        estadoRegistroEntrada["state"]="disabled"
     else:
         print("no hay seleccion")
     print(seleccion)
+def actualizarRegistro(codigo, nombre, estado):
+    global flaBotonActualizar
+    verificarFlag()
+    conexion = back.establecer_conexion()
+    back.actualizar_marcas(conexion,int(codigo),nombre,estado)
+    back.cerrar_conexion(conexion)
+    marFlaAct=False
+    flaBotonActualizar=False;
+    codigoEntrada.delete(0,tkinter.END)
+
+
 
 def enviarGrilla(codigoInput,descripcionInput,estadoRegistroInput):
     grilla.insert("",tkinter.END,values=(codigoInput,descripcionInput,estadoRegistroInput))
@@ -88,7 +119,8 @@ def enviarGrilla(codigoInput,descripcionInput,estadoRegistroInput):
 
 def llenarGrilla():
     #error pro treeview vacio
-    if grilla.item(grilla.get_children()):
+    filas = grilla.get_children()
+    if grilla.item(filas):
         grilla.delete(*grilla.get_children())
     conexion = back.establecer_conexion()
     registrosTodos = back.seleccionar_MARCA(conexion)
@@ -97,12 +129,28 @@ def llenarGrilla():
         enviarGrilla(str(registro[0]),registro[2],registro[1])
         contadorGrilla +=1
     #solo para verficiar
-    filas = grilla.get_children()
     for fila in filas:
         indice = grilla.index(fila)
         print(f"indice:{indice}")
 
     back.cerrar_conexion(conexion)
+
+def mostrarVentanaEmergente(texto):
+    ventanaEmergente = tkinter.Toplevel(window)
+    ventanaEmergente.title("Waning")
+
+    etiqueta = tkinter.Label(ventanaEmergente, text=texto)
+    etiqueta.pack(padx=20,pady=20)
+    ventanaEmergente.geometry("+%d+%d" % (window.winfo_rootx() + window.winfo_width() // 2 - ventanaEmergente.winfo_width() // 2,
+                                           window.winfo_rooty() + window.winfo_height() // 2 - ventanaEmergente.winfo_height() // 2))
+
+
+
+
+
+    ventanaEmergente.grab_set()
+
+
 
 
 
