@@ -5,7 +5,7 @@ import backend as back
 
 
 window = tkinter.Tk()
-window.title("Mantenimiento tabla Zonas")
+window.title("Mantenimiento tabla GZZ_MARCAS")
 
 #Agregando funcionalidad a los botones
 codigoInput= descripcionInput= estadoRegistroInput=""
@@ -161,6 +161,7 @@ def enviarBD():
 def cancelarBoton():
     global marFlaAct
     global estadosBotonActualizar
+    habilitar()
     blanqueoInputs()
     grilla.selection_remove(grilla.selection())
     valorDefaul.set("A")
@@ -253,13 +254,13 @@ tabla.grid(row=1,column=0)
 botones.grid(row=3,column=0, sticky="nswe")
 
 #agregamos widgets el primer frame Registro
-codigo = tkinter.Label(registro, text="Codigo", anchor="w")
-descripcion = tkinter.Label(registro, text="Descripcion", anchor="w")
+codigo = tkinter.Label(registro, text="Código", anchor="w")
+descripcion = tkinter.Label(registro, text="Descripción", anchor="w")
 estadoRegistro = tkinter.Label(registro, text="Estado Registro")
 
 
 codigoEntrada =tkinter.Entry(registro,width=10,state="disabled")
-descripcionEntrada =tkinter.Entry(registro,width=60,state="disabled")
+descripcionEntrada =tkinter.Entry(registro,width=80,state="disabled")
 valorDefaul =tkinter.StringVar()
 valorDefaul.set("A")
 estadoRegistroEntrada =tkinter.Entry(registro,width=2,state="disabled",
@@ -284,8 +285,8 @@ grilla.column("estado",width=60)
 
 #por defecto crea la primera columa
 #pongo nombre  a las otras dos columnas
-grilla.heading("codigo", text="Codigo")
-grilla.heading("descripcion", text="Descripcion")
+grilla.heading("codigo", text="Código")
+grilla.heading("descripcion", text="Descripción")
 grilla.heading("estado", text="Estado")
 #grilla.insert("",tkinter.END,text="1",values=("001","Colgate","A"))
 grilla.grid(row=0,column=0)
