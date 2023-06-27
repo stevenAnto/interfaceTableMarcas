@@ -118,25 +118,28 @@ def enviarBD():
         print("Estado de masFlaAct",marFlaAct)
         if estadosBotonActualizar=="update":
             print("entro a actualizar")
-            actulizo = actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
+            actualizo = actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
             adicionarF()
-            mostrarVentanaEmergente(actulizo)
+            mostrarVentanaEmergente(actualizo)
         elif estadosBotonActualizar=="eliminar":
             print("entro eliminar")
-            actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
+            actualizo=actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
             blanqueoInputs()
             adicionarF()
             estadosBotonActualizar=""
+            mostrarVentanaEmergente(actualizo)
         elif estadosBotonActualizar=="inactivar":
             print("entro Inactivar")
-            actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
+            actualizo=actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
             adicionarF()
             estadosBotonActualizar=""
+            mostrarVentanaEmergente(actualizo)
         elif estadosBotonActualizar=="reactivar":
             print("entro Reactivar")
-            actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
+            actualizo=actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
             adicionarF()
             estadosBotonActualizar=""
+            mostrarVentanaEmergente(actualizo)
         elif estadosBotonActualizar=="insertar":
             print(codigoInput,descripcionInput,estadoRegistroInput)
             conexion = back.establecer_conexion()
@@ -191,10 +194,11 @@ def actualizarRegistro(codigo, nombre, estado):
     global flaBotonActualizar
     verificarFlag()
     conexion = back.establecer_conexion()
-    back.actualizar_marcas(conexion,int(codigo),nombre,estado)
+    actualizar=back.actualizar_marcas(conexion,int(codigo),nombre,estado)
     back.cerrar_conexion(conexion)
     marFlaAct=False
     codigoEntrada.delete(0,tkinter.END)
+    return actualizar
 
 
 
