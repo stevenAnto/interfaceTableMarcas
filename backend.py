@@ -4,7 +4,7 @@ import mysql.connector
 host = 'localhost'
 port = 3306
 user = 'root'
-password = 'contra456'
+password = 'PasP@wer123'
 database = 'control_stock_libreria'
 
 # Función para establecer la conexión a la base de datos
@@ -38,6 +38,7 @@ def insertar_marca(conexion, codigo, nombre, estado_registro):
         cursor.execute(sql, valores)
         conexion.commit()
         print("Registro insertado correctamente en la tabla GZZ_MARCAS.")
+        return ("Registro insertado correctamente en la GZZ_MARCAs")
     except mysql.connector.Error as error:
         print("Error al insertar registro en la tabla GZZ_MARCAS:", error)
         return error
@@ -62,8 +63,10 @@ def actualizar_marcas(conexion, codigo, nombre , estado):
         cursor.execute(sql, valores)
         conexion.commit()
         print("Registro actualizado correctamente en la tabla GZZ_MARCAS.")
+        return "Registro actualizado correctamente en la tabla GZZ_MARCAS"
     except mysql.connector.Error as error:
         print("Error al actualizar registro en la tabla GZZ_MARCAS:", error)
+        return error
 
 
 #conexion = establecer_conexion()

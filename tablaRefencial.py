@@ -118,8 +118,9 @@ def enviarBD():
         print("Estado de masFlaAct",marFlaAct)
         if estadosBotonActualizar=="update":
             print("entro a actualizar")
-            actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
+            actulizo = actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
             adicionarF()
+            mostrarVentanaEmergente(actulizo)
         elif estadosBotonActualizar=="eliminar":
             print("entro eliminar")
             actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
@@ -139,9 +140,10 @@ def enviarBD():
         elif estadosBotonActualizar=="insertar":
             print(codigoInput,descripcionInput,estadoRegistroInput)
             conexion = back.establecer_conexion()
-            back.insertar_marca(conexion,int(codigoInput),
+            inserto=back.insertar_marca(conexion,int(codigoInput),
             descripcionInput,estadoRegistroInput)
             back.cerrar_conexion(conexion)
+            mostrarVentanaEmergente(inserto)
             estadosBotonActualizar=""
 
         else:
@@ -150,7 +152,7 @@ def enviarBD():
         llenarGrilla()
 
     else:
-        mostrarVentanaEmergente("marFlaAct")
+        mostrarVentanaEmergente("Estado marFlaAct :"+str(marFlaAct))
         print("Error")
 
     blanqueoInputs()
