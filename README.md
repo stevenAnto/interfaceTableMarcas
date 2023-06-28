@@ -9,3 +9,6 @@
 - Libreria tkinter
 - Libreria Mysql
 - SGBD Mysql
+
+(imagenes/vacio1.png)
+(imagenes/lleno.png)
