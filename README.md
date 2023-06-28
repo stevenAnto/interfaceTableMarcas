@@ -1,4 +1,4 @@
-# GRUPO 17 LABORATORIO BASE DE DATOS
+# GRUPO 17 LABORATORIO BASE DE DATOS (rama main)
 ## INTEGRANTES 
 - Alvarez Astete Kevin Jheeremy
 - Calcina Puma Esteven Antonio
