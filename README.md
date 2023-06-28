@@ -10,5 +10,5 @@
 - Libreria Mysql
 - SGBD Mysql
 
-(imagenes/vacio1.png)
-(imagenes/lleno.png)
+![vacio Registro](imagenes/vacio1.png)
+![Grilla llena](imagenes/lleno.png)
