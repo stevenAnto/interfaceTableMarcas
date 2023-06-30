@@ -2,14 +2,16 @@ import tkinter
 from tkinter import ttk
 
 class FrameTabla(tkinter.LabelFrame):
-    def __init__(self, master=None, **Kwargs):
+    #nombreFrame1 es el nombre del primer Frame, si el primer Frame es registro y el segundo podria ser grilla o el que crea conveniente
+    def __init__(self,nombreFrame1,nombreFrame2,master=None, **Kwargs):
         super().__init__(master,**Kwargs)
-        self.registro = tkinter.LabelFrame(self, text="Registro de Cargo")
+        self.registro = tkinter.LabelFrame(self, text=nombreFrame1)
         self.registro.grid(row=0,column=0)
-        self.tabla = tkinter.LabelFrame(self, text="Tabla_Marcas")
+        self.tabla = tkinter.LabelFrame(self, text=nombreFrame2)
         self.tabla.grid(row=1,column=0)
         self.botones = tkinter.LabelFrame(self)
         self.botones.grid(row=2,column=0, sticky="nswe")
+        self.elementosGrilla = [];
         #estilos
 
 
@@ -82,3 +84,4 @@ class FrameTabla(tkinter.LabelFrame):
         self.estadoRegistroEntrada["state"]="normal"
 
     def enviarBD(self):
+        pass
