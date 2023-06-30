@@ -1,16 +1,17 @@
 import mysql.connector
 from typing import List
 from typing import Tuple
+from typing import Dict
 
 class Connection:
-    def __init__(self, host, user, password, database):
+    def __init__(self, host:str, user:str, password:str, database:str):
         self.host = host
         self.user = user
         self.password = password
         self.database = database
         self.connection = None
 
-    def connect(self):
+    def connect(self)->str:
         try:
             self.connection = mysql.connector.connect(
                     host=self.host,
@@ -22,18 +23,22 @@ class Connection:
             return "Connected to the database"
         except mysql.connector.Error as error:
             print("Failed to connect to the database:", error)
+            return error
 
-    def close(self):
+    def close(self)->str:
         if self.connection:
             self.connection.close()
             print("Connection closed")
             return "connection closed"
 
-    def insert_record(self, table:str,columns:Tuple, data:Tuple):
+    #insercion por didcionario
+    def insert_record(self, table:str, data:Dict)->str:
         try:
             cursor = self.connection.cursor()
-            query = f"INSERT INTO {table} ({columns}) VALUES (%s, %s, %s)"
-            cursor.execute(query,data)
+            columns = ', '.join(data.keys())
+            values = ', '.join(["%s"]*len(data))
+            query = f"INSERT INTO {table} ({columns}) VALUES ({values})"
+            cursor.execute(query, tuple(data.values()))
             self.connection.commit()
             print("Record inserted successfully")
             return "Record inserted successfully"
@@ -43,11 +48,12 @@ class Connection:
 
     #la List columns tiene 3 elementos que son loos nombres de los campos
     #La tupla solo tiene 2 elementos que son los que se van actualizar
-    def update_record(self, table:str,id,columns:List, data:Tuple):
+    def update_record(self, table:str,nomCod:str,cod:int,data:Dict)->str:
         try:
             cursor = self.connection.cursor()
-            query = f"UPDATE {table} SET {columns[1]}=%s, {columns[2]}=%s  WHERE  {columns[0]}= {id}"
-            cursor.execute(query, data )
+            set_values = ', '.join([f"{column} = %s" for column in data.keys()])
+            query = f"UPDATE {table} SET {set_values} WHERE {nomCod} = {cod}"
+            cursor.execute(query, tuple(data.values()))
             self.connection.commit()
             print("Record updated successfully")
             return "Record update successfully"
@@ -55,7 +61,7 @@ class Connection:
             print("Failed to update record:", error)
             return error
 
-    def recuperarDatosTabla(self, table):
+    def recuperarDatosTabla(self, table:str)->str:
         try:
             cursor = self.connection.cursor()
             query = f"SELECT * FROM {table}"
