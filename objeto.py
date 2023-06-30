@@ -19,7 +19,7 @@ class FrameTabla(tkinter.LabelFrame):
         self.widgetsTabla()
         self.widgetsBotones()
         #atributos globales
-        self.codigoEntrada
+        #self.codigoEntrada
         self.descripcionEntrada
         self.estadoRegistroEntrada
 
@@ -35,13 +35,18 @@ class FrameTabla(tkinter.LabelFrame):
         estadoRegistro.grid(row=2,column=0)
         #Inputs
 
-        self.codigoEntrada =tkinter.Entry(self.registro,width=10,state="disabled")
+        codigoEntrada =tkinter.Entry(self.registro,width=10,state="disabled")
         self.descripcionEntrada =tkinter.Entry(self.registro,width=60,state="disabled")
         self.estadoRegistroEntrada =tkinter.Entry(self.registro,width=2,state="disabled")
         #posicinamos
-        self.codigoEntrada.grid(row=0,column=1, sticky="w")
+        codigoEntrada.grid(row=0,column=1, sticky="w")
         self.descripcionEntrada.grid(row=1,column=1, sticky="we")
         self.estadoRegistroEntrada.grid(row=2,column=1,sticky="w")
+
+
+    def hijosFrame(self, framePadre):
+        listaChildren = framePadre.winfo_children()
+        return listaChildren
 
     def widgetsTabla(self):
         #agremos un treeview
@@ -79,8 +84,10 @@ class FrameTabla(tkinter.LabelFrame):
 
     def habilitar(self):
         print("se habilito inputs")
-        self.codigoEntrada["state"]="normal"
-        self.descripcionEntrada["state"]="normal"
+        inputs = self.hijosFrame(self.registro)
+        inputs[0]["state"]="normal"
+        #self.codigoEntrada["state"]="normal"
+        #self.descripcionEntrada["state"]="normal"
         self.estadoRegistroEntrada["state"]="normal"
 
     def enviarBD(self):
