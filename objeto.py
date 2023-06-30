@@ -85,7 +85,8 @@ class FrameTabla(tkinter.LabelFrame):
     def habilitar(self):
         print("se habilito inputs")
         inputs = self.hijosFrame(self.registro)
-        inputs[0]["state"]="normal"
+        print(len(inputs))
+        inputs[3]["state"]="normal"
         #self.codigoEntrada["state"]="normal"
         #self.descripcionEntrada["state"]="normal"
         self.estadoRegistroEntrada["state"]="normal"
