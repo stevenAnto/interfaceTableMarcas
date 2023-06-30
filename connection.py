@@ -1,4 +1,6 @@
 import mysql.connector
+from typing import List
+from typing import Tuple
 
 class Connection:
     def __init__(self, host, user, password, database):
@@ -27,36 +29,39 @@ class Connection:
             print("Connection closed")
             return "connection closed"
 
-    def insert_record(self, table, data):
+    def insert_record(self, table:str,columns:Tuple, data:Tuple):
         try:
             cursor = self.connection.cursor()
-            columns = ', '.join(data.keys())
-            values = ', '.join(["%s"] * len(data))
-            query = f"INSERT INTO {table} ({columns}) VALUES ({values})"
-            cursor.execute(query, tuple(data.values()))
+            query = f"INSERT INTO {table} ({columns}) VALUES (%s, %s, %s)"
+            cursor.execute(query,data)
             self.connection.commit()
             print("Record inserted successfully")
+            return "Record inserted successfully"
         except mysql.connector.Error as error:
             print("Failed to insert record:", error)
+            return error
 
-    def update_record(self, table, record_id, data):
+    #la List columns tiene 3 elementos que son loos nombres de los campos
+    #La tupla solo tiene 2 elementos que son los que se van actualizar
+    def update_record(self, table:str,id,columns:List, data:Tuple):
         try:
             cursor = self.connection.cursor()
-            set_values = ', '.join([f"{column} = %s" for column in data.keys()])
-            query = f"UPDATE {table} SET {set_values} WHERE id = %s"
-            cursor.execute(query, tuple(data.values()) + (record_id,))
+            query = f"UPDATE {table} SET {columns[1]}=%s, {columns[2]}=%s  WHERE  {columns[0]}= {id}"
+            cursor.execute(query, data )
             self.connection.commit()
             print("Record updated successfully")
+            return "Record update successfully"
         except mysql.connector.Error as error:
             print("Failed to update record:", error)
+            return error
 
     def recuperarDatosTabla(self, table):
         try:
-            cursor = self.connection.cursor(dictionary=True)
+            cursor = self.connection.cursor()
             query = f"SELECT * FROM {table}"
             cursor.execute(query)
             records = cursor.fetchall()
-            for record in records:
-                print(record)
+            return records
         except mysql.connector.Error as error:
             print("Failed to retrieve records:", error)
+            return error

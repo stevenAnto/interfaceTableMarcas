@@ -18,10 +18,6 @@ class FrameTabla(tkinter.LabelFrame):
         self.widgetsRegistro()
         self.widgetsTabla()
         self.widgetsBotones()
-        #atributos globales
-        #self.codigoEntrada
-        self.descripcionEntrada
-        self.estadoRegistroEntrada
 
 
     def widgetsRegistro(self):
@@ -36,14 +32,15 @@ class FrameTabla(tkinter.LabelFrame):
         #Inputs
 
         codigoEntrada =tkinter.Entry(self.registro,width=10,state="disabled")
-        self.descripcionEntrada =tkinter.Entry(self.registro,width=60,state="disabled")
-        self.estadoRegistroEntrada =tkinter.Entry(self.registro,width=2,state="disabled")
+        descripcionEntrada =tkinter.Entry(self.registro,width=60,state="disabled")
+        estadoRegistroEntrada =tkinter.Entry(self.registro,width=2,state="disabled")
         #posicinamos
         codigoEntrada.grid(row=0,column=1, sticky="w")
-        self.descripcionEntrada.grid(row=1,column=1, sticky="we")
-        self.estadoRegistroEntrada.grid(row=2,column=1,sticky="w")
+        descripcionEntrada.grid(row=1,column=1, sticky="we")
+        estadoRegistroEntrada.grid(row=2,column=1,sticky="w")
 
 
+    #Funcion que me devuelve una lista de los widgets dentro de un Frame
     def hijosFrame(self, framePadre):
         listaChildren = framePadre.winfo_children()
         return listaChildren
@@ -87,9 +84,9 @@ class FrameTabla(tkinter.LabelFrame):
         inputs = self.hijosFrame(self.registro)
         print(len(inputs))
         inputs[3]["state"]="normal"
-        #self.codigoEntrada["state"]="normal"
-        #self.descripcionEntrada["state"]="normal"
-        self.estadoRegistroEntrada["state"]="normal"
+        inputs[4]["state"]="normal"
+        inputs[4]["state"]="normal"
 
     def enviarBD(self):
+
         pass
