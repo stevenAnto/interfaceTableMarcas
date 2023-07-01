@@ -114,14 +114,15 @@ def enviarBD():
     estadoRegistroInput=estadoRegistroEntrada.get()
     acciones = ["update","eliminar","inactivar","reactivar"]
     verificarFlag()
-    #print("masFlaAct",marFlaAct)
-    if marFlaAct in acciones:
-        #print("Estado de masFlaAct",marFlaAct)
-        actualizo = actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
-        mostrarVentanaEmergente(actualizo)
+    print("masFlaAct",marFlaAct)
+    if marFlaAct:
+        print("Estado de masFlaAct",marFlaAct)
+        if estadosBotonActualizar in acciones:
+            actualizo = actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
+            mostrarVentanaEmergente(actualizo)
         
         if estadosBotonActualizar=="insertar":
-            #print(codigoInput,descripcionInput,estadoRegistroInput)
+            print(codigoInput,descripcionInput,estadoRegistroInput)
             conexion = back.establecer_conexion()
             inserto=back.insertar_marca(conexion,int(codigoInput),
             descripcionInput,estadoRegistroInput)
