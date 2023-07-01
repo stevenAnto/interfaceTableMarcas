@@ -201,7 +201,7 @@ def llenarGrilla():
 
 def mostrarVentanaEmergente(texto):
     ventanaEmergente = tkinter.Toplevel(window)
-    ventanaEmergente.title("Waning")
+    ventanaEmergente.title("Warning")
 
     etiqueta = tkinter.Label(ventanaEmergente, text=texto)
     etiqueta.pack(padx=20,pady=20)
