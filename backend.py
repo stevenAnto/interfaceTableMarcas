@@ -4,7 +4,7 @@ import mysql.connector
 host = 'localhost'
 port = 3306
 user = 'root'
-password = 'PasP@wer123'
+password = 'Admin@2023'
 database = 'control_stock_libreria'
 
 # Función para establecer la conexión a la base de datos

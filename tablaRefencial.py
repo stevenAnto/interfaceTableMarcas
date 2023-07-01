@@ -112,46 +112,26 @@ def enviarBD():
     codigoInput = codigoEntrada.get()
     descripcionInput=descripcionEntrada.get()
     estadoRegistroInput=estadoRegistroEntrada.get()
+    acciones = ["update","eliminar","inactivar","reactivar"]
     verificarFlag()
-    print("masFlaAct",marFlaAct)
-    if marFlaAct :
-        print("Estado de masFlaAct",marFlaAct)
-        if estadosBotonActualizar=="update":
-            print("entro a actualizar")
-            actualizo = actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
-            adicionarF()
-            mostrarVentanaEmergente(actualizo)
-        elif estadosBotonActualizar=="eliminar":
-            print("entro eliminar")
-            actualizo=actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
-            blanqueoInputs()
-            adicionarF()
-            estadosBotonActualizar=""
-            mostrarVentanaEmergente(actualizo)
-        elif estadosBotonActualizar=="inactivar":
-            print("entro Inactivar")
-            actualizo=actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
-            adicionarF()
-            estadosBotonActualizar=""
-            mostrarVentanaEmergente(actualizo)
-        elif estadosBotonActualizar=="reactivar":
-            print("entro Reactivar")
-            actualizo=actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
-            adicionarF()
-            estadosBotonActualizar=""
-            mostrarVentanaEmergente(actualizo)
-        elif estadosBotonActualizar=="insertar":
-            print(codigoInput,descripcionInput,estadoRegistroInput)
+    #print("masFlaAct",marFlaAct)
+    if marFlaAct in acciones:
+        #print("Estado de masFlaAct",marFlaAct)
+        actualizo = actualizarRegistro(codigoInput,descripcionInput,estadoRegistroInput)
+        mostrarVentanaEmergente(actualizo)
+        
+        if estadosBotonActualizar=="insertar":
+            #print(codigoInput,descripcionInput,estadoRegistroInput)
             conexion = back.establecer_conexion()
             inserto=back.insertar_marca(conexion,int(codigoInput),
             descripcionInput,estadoRegistroInput)
             back.cerrar_conexion(conexion)
             mostrarVentanaEmergente(inserto)
-            estadosBotonActualizar=""
 
         else:
             print("no tiene estado el boton")
-        grilla.delete(*grilla.get_children())
+        estadosBotonActualizar=""
+        valorDefaul.set("A")
         llenarGrilla()
 
     else:
@@ -175,7 +155,8 @@ def cancelarBoton():
     estadosBotonActualizar=""
 
 def blanqueoInputs():
-    print("entro a blanqueoInputs")
+    codigoEntrada["state"]="normal"
+    descripcionEntrada["state"]="normal"
     codigoEntrada.delete(0,tkinter.END)
     descripcionEntrada.delete(0,tkinter.END)
     estadoRegistroEntrada.delete(0,tkinter.END)
@@ -208,20 +189,13 @@ def enviarGrilla(codigoInput,descripcionInput,estadoRegistroInput):
 
 def llenarGrilla():
     #error pro treeview vacio
-    filas = grilla.get_children()
-    if grilla.item(filas):
-        grilla.delete(*grilla.get_children())
+    grilla.delete(*grilla.get_children())
     conexion = back.establecer_conexion()
     registrosTodos = back.seleccionar_MARCA(conexion)
     contadorGrilla=0
     for registro in registrosTodos:
         enviarGrilla(str(registro[0]),registro[2],registro[1])
         contadorGrilla +=1
-    #solo para verficiar
-    for fila in filas:
-        indice = grilla.index(fila)
-        print(f"indice:{indice}")
-
     back.cerrar_conexion(conexion)
 
 def mostrarVentanaEmergente(texto):
