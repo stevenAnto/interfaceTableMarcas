@@ -124,7 +124,9 @@ def enviarBD():
         if estadosBotonActualizar=="insertar":
             print(codigoInput,descripcionInput,estadoRegistroInput)
             conexion = back.establecer_conexion()
-            inserto=back.insertar_marca(conexion,int(codigoInput),
+            nomTable = "GZZ_MARCAS"
+            atributosTabla = "(MarCod, MarNom, MarEstReg)"
+            inserto=back.insertar(conexion,nomTable,atributosTabla,int(codigoInput),
             descripcionInput,estadoRegistroInput)
             back.cerrar_conexion(conexion)
             mostrarVentanaEmergente(inserto)
@@ -176,7 +178,11 @@ def actualizarRegistro(codigo, nombre, estado):
     global flaBotonActualizar
     verificarFlag()
     conexion = back.establecer_conexion()
-    actualizar=back.actualizar_marcas(conexion,int(codigo),nombre,estado)
+    tabName = "GZZ_MARCAS"
+    colName = "MarNom"
+    colER = "MarEstReg"
+    colCod = "MarCod"
+    actualizar=back.actualizar(conexion,tabName,colName,colER,colCod,int(codigo),nombre,estado)
     back.cerrar_conexion(conexion)
     marFlaAct=False
     codigoEntrada.delete(0,tkinter.END)
@@ -192,7 +198,7 @@ def llenarGrilla():
     #error pro treeview vacio
     grilla.delete(*grilla.get_children())
     conexion = back.establecer_conexion()
-    registrosTodos = back.seleccionar_MARCA(conexion)
+    registrosTodos = back.seleccionar(conexion,"GZZ_MARCAS")
     contadorGrilla=0
     for registro in registrosTodos:
         enviarGrilla(str(registro[0]),registro[2],registro[1])

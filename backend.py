@@ -30,42 +30,42 @@ def cerrar_conexion(conexion):
         conexion.close()
         print("Conexión cerrada.")
 # Función para insertar registros en la tabla GZZ_MARCA
-def insertar_marca(conexion, codigo, nombre, estado_registro):
+def insertar(conexion, nomTable, atribTable, codigo, nombre, estado_registro):
     try:
         cursor = conexion.cursor()
-        sql = "INSERT INTO GZZ_MARCAS (MarCod, MarNom, MarEstReg) VALUES (%s, %s, %s)"
+        sql = f"INSERT INTO {nomTable} {atribTable} VALUES (%s, %s, %s)"
         valores = (codigo, nombre, estado_registro)
         cursor.execute(sql, valores)
         conexion.commit()
-        print("Registro insertado correctamente en la tabla GZZ_MARCAS.")
-        return ("Registro insertado correctamente en la GZZ_MARCAs")
+        print(f"Registro insertado correctamente en la tabla {nomTable}")
+        return (f"Registro insertado correctamente en la {nomTable}")
     except mysql.connector.Error as error:
-        print("Error al insertar registro en la tabla GZZ_MARCAS:", error)
+        print(f"Error al insertar registro en la tabla {nomTable}", error)
         return error
 
 # Función para seleccionar todos los registros de la tabla GZZ_MARCA
-def seleccionar_MARCA(conexion):
+def seleccionar(conexion, nomTable):
     try:
         cursor = conexion.cursor()
-        cursor.execute("SELECT * FROM GZZ_MARCAS")
+        cursor.execute(f"SELECT * FROM {nomTable}")
         registros = cursor.fetchall()
-        print("Registros en la tabla GZZ_MARCAS:")
+        print(f"Registros en la tabla {nomTable}")
         print(registros)
         return registros
     except mysql.connector.Error as error:
-        print("Error al seleccionar registros de la tabla GZZ_MARCAS:", error)
+        print(f"Error al seleccionar registros de la tabla {nomTable}", error)
 
-def actualizar_marcas(conexion, codigo, nombre , estado):
+def actualizar(conexion, nomTable, colName, colER, colCod, codigo, nombre , estado):
     try:
         cursor = conexion.cursor()
-        sql = "UPDATE GZZ_MARCAS SET MarNom = %s, MarEstReg = %s WHERE MarCod = %s"
+        sql = f"UPDATE {nomTable} SET {colName} = %s , {colER} = %s WHERE {colCod} = %s"
         valores = (nombre, estado, codigo)
         cursor.execute(sql, valores)
         conexion.commit()
-        print("Registro actualizado correctamente en la tabla GZZ_MARCAS.")
-        return "Registro actualizado correctamente en la tabla GZZ_MARCAS"
+        print("Registro actualizado correctamente en la tabla " + nomTable)
+        return "Registro actualizado correctamente en la tabla " + nomTable
     except mysql.connector.Error as error:
-        print("Error al actualizar registro en la tabla GZZ_MARCAS:", error)
+        print("Error al actualizar registro en la tabla "+ nomTable, error)
         return error
 
 
