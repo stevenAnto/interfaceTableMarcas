@@ -117,25 +117,7 @@ class FrameTabla(tkinter.LabelFrame):
         btnActualizar.grid(row=1,column=2,sticky="we")
         btnSalir.grid(row=1,column=3,sticky="we")
 
-    def llenarGrillaUnaFila(self,codigoInput:str,descripcionInput:str,estadoRegistroInput:str):
-        widgeDeFrameTabla = self.hijosFrame(self.tabla)
-        widgeDeFrameTabla[0].insert("",tkinter.END,values=(codigoInput,descripcionInput,estadoRegistroInput))
-
-    def llenarTodaGrilla(self):
-        widgeDeFrameTabla = self.hijosFrame(self.tabla)
-        grilla = widgeDeFrameTabla[0]
-        filas = grilla.get_children()
-        print("filas",filas)
-        #vaciar grilla
-        for fila in filas:
-            if grilla.item(fila):
-                grilla.delete(fila)
-        print(self.elementosGrilla)
-        #llenar de nuevo
-        for registro in self.elementosGrilla:
-            self.llenarGrillaUnaFila(str(registro[0]),registro[2],registro[1])
-
-
+    #funcions de los botones
     def adicionar(self):
         self.habilitar()
         self.valorEst.set("A")
@@ -198,45 +180,6 @@ class FrameTabla(tkinter.LabelFrame):
         self.actualizarElementosGrilla()
         self.llenarTodaGrilla()
 
-    def salir(self):
-        #destruyo al padre jejejje
-        self.master.destroy()
-
-    def putTextInputs(self,codigoInput:str,descripcionInput:str,estadoRegistroInput:str):
-        print("entro a colocar texto")
-        self.valorPre.set(codigoInput)
-        self.valorDes.set(descripcionInput)
-        self.valorEst.set(estadoRegistroInput)
-
-    def habilitar(self):
-        print("se habilito inputs")
-        inputs = self.hijosFrame(self.registro)
-        print(len(inputs))
-        inputs[3]["state"]="normal"
-        inputs[4]["state"]="normal"
-        inputs[5]["state"]="disabled"
-
-    def deshabilitar(self):
-        print("se habilito inputs")
-        inputs = self.hijosFrame(self.registro)
-        print(len(inputs))
-        inputs[3]["state"]="disabled"
-        inputs[4]["state"]="disabled"
-        inputs[5]["state"]="disabled"
-
-    def blanqueoInputs(self):
-        print("entro blanqueoInputs")
-        inputs = self.hijosFrame(self.registro)
-        self.valorPre.set("")
-        self.valorDes.set("")
-        self.valorEst.set("")
-
-
-    def actualizarElementosGrilla(self)->List:
-        self.conexionTabla.connect()
-        self.elementosGrilla = self.conexionTabla.recuperarDatosTabla(self.titulo)
-        self.conexionTabla.close()
-
     def actualizar(self):
         print("entro a actualizar con boton ", self.estadoBotonActualizar)
         #tomo los datos de los inputs
@@ -289,6 +232,68 @@ class FrameTabla(tkinter.LabelFrame):
             self.deshabilitar()
             self.actualizarElementosGrilla()
             self.llenarTodaGrilla()
+
+    def salir(self):
+        #destruyo al padre jejejje
+        self.master.destroy()
+
+
+    #Funciones auxiliares
+    def llenarGrillaUnaFila(self,codigoInput:str,descripcionInput:str,estadoRegistroInput:str):
+        widgeDeFrameTabla = self.hijosFrame(self.tabla)
+        widgeDeFrameTabla[0].insert("",tkinter.END,values=(codigoInput,descripcionInput,estadoRegistroInput))
+
+    def llenarTodaGrilla(self):
+        widgeDeFrameTabla = self.hijosFrame(self.tabla)
+        grilla = widgeDeFrameTabla[0]
+        filas = grilla.get_children()
+        print("filas",filas)
+        #vaciar grilla
+        for fila in filas:
+            if grilla.item(fila):
+                grilla.delete(fila)
+        print(self.elementosGrilla)
+        #llenar de nuevo
+        for registro in self.elementosGrilla:
+            self.llenarGrillaUnaFila(str(registro[0]),registro[2],registro[1])
+
+
+
+    def putTextInputs(self,codigoInput:str,descripcionInput:str,estadoRegistroInput:str):
+        print("entro a colocar texto")
+        self.valorPre.set(codigoInput)
+        self.valorDes.set(descripcionInput)
+        self.valorEst.set(estadoRegistroInput)
+
+    def habilitar(self):
+        print("se habilito inputs")
+        inputs = self.hijosFrame(self.registro)
+        print(len(inputs))
+        inputs[3]["state"]="normal"
+        inputs[4]["state"]="normal"
+        inputs[5]["state"]="disabled"
+
+    def deshabilitar(self):
+        print("se habilito inputs")
+        inputs = self.hijosFrame(self.registro)
+        print(len(inputs))
+        inputs[3]["state"]="disabled"
+        inputs[4]["state"]="disabled"
+        inputs[5]["state"]="disabled"
+
+    def blanqueoInputs(self):
+        print("entro blanqueoInputs")
+        inputs = self.hijosFrame(self.registro)
+        self.valorPre.set("")
+        self.valorDes.set("")
+        self.valorEst.set("")
+
+
+    def actualizarElementosGrilla(self)->List:
+        self.conexionTabla.connect()
+        self.elementosGrilla = self.conexionTabla.recuperarDatosTabla(self.titulo)
+        self.conexionTabla.close()
+
 
 
 
