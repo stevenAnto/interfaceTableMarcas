@@ -1,7 +1,7 @@
 import tkinter
 import connection as c
 from tkinter import ttk
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, string
 
 
 
@@ -124,7 +124,6 @@ class FrameTabla(tkinter.LabelFrame):
     def adicionar(self):
         self.habilitar()
         self.valorPre.set("A")
-        self.estadoBotonActualizar="adicionar"
 
 
     def habilitar(self):
@@ -134,22 +133,6 @@ class FrameTabla(tkinter.LabelFrame):
         inputs[3]["state"]="normal"
         inputs[4]["state"]="normal"
         inputs[5]["state"]="disabled"
-
-    def deshabilitar(self):
-        print("se habilito inputs")
-        inputs = self.hijosFrame(self.registro)
-        print(len(inputs))
-        inputs[3]["state"]="disabled"
-        inputs[4]["state"]="disabled"
-        inputs[5]["state"]="disabled"
-
-    def blanqueoInputs(self):
-        print("entro blanqueoInputs")
-        inputs = self.hijosFrame(self.registro)
-        inputs[3].delete(0,tkinter.END)
-        inputs[4].delete(0,tkinter.END)
-        inputs[5].delete(0,tkinter.END)
-
 
     def actualizarElementosGrilla(self)->List:
         self.conexionTabla.connect()
@@ -165,28 +148,25 @@ class FrameTabla(tkinter.LabelFrame):
         print(codigoInput,descripcionInput,estadoRegistroInput)
         print(self.campo1,self.campo2,self.campo3)
         diccionario ={
-                self.campo1:int(codigoInput),
-                self.campo2:estadoRegistroInput,
-                self.campo3:descripcionInput,
+                self.campo1:codigoInput,
+                self.campo2:descripcionInput,
+                self.campo3:estadoRegistroInput,
                 }
         print(diccionario)
         if self.estadoBotonActualizar=="adicionar":
             print("Entro a adicionar")
-            self.conexionTabla.connect()
-            insertar =self.conexionTabla.insert_record(self.titulo,diccionario)
-            self.conexionTabla.close()
-            self.blanqueoInputs()
-            self.deshabilitar()
-            self.actualizarElementosGrilla()
-            self.llenarTodaGrilla()
-            print(f"insertar {insertar}")
+            insertar=insertarBD(diccionario)
             self.mostrarVentanaEmergente(insertar)
 
+    def insertarBD(self,**kwargs)->string:
+        self.conexionTabla.connect()
+        insertar =self.conexionTabla.insert_record(self.titulo,kwargs)
+        self.conexionTabla.close()
+        return insertar
 
     def mostrarVentanaEmergente(self,mensaje):
         ventanaEmergente = tkinter.Toplevel(self)
         ventanaEmergente.title("Warning")
         etiqueta = tkinter.Label(ventanaEmergente,text=mensaje)
-        etiqueta.pack()
         ventanaEmergente.geometry("+%d+%d" % (self.winfo_rootx() + self.winfo_width() // 2 - ventanaEmergente.winfo_width() // 2,
             self.winfo_rooty() + self.winfo_height() // 2 - ventanaEmergente.winfo_height() // 2))

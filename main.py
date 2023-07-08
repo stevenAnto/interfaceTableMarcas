@@ -13,6 +13,7 @@ datosConexion = (host,port,user,password,database)
 
 
 tablaMantenimiento = f.FrameTabla(master=window, text=titulo, nombreFrame1="GAaaaaaaaaaaaa",nombreFrame2="GAAax2",datosConexion=datosConexion)
+tablaMantenimiento.cargarNomCampos("MarCod","MarEstReg","MarNom")
 #poner titulo al padre
 tablaMantenimiento.master.title("Mantenimiento tabla Zonas")
 tablaMantenimiento.grid(row=1,column=0, sticky="nswe")
