@@ -1,13 +1,13 @@
 import tkinter
 import connection as c
 from tkinter import ttk
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Any
 
 
 
 class FrameTabla(tkinter.LabelFrame):
     #nombreFrame1 es el nombre del primer Frame, si el primer Frame es registro y el segundo podria ser grilla o el que crea conveniente
-    def __init__(self,nombreFrame1,nombreFrame2,master=None,datosConexion=None, **kwargs):
+    def __init__(self,nombreFrame1:str,nombreFrame2:str,master:Any=None,datosConexion:Tuple=None, **kwargs):
         super().__init__(master,**kwargs)
         #control del input de estado de Registro. Se crea antes la variable
         self.valorPre= tkinter.StringVar()
@@ -45,7 +45,7 @@ class FrameTabla(tkinter.LabelFrame):
 
         #En vista que el boton actualizar realizar muchas tareas se creara sus estados
         self.estadoBotonActualizar=""
-    def cargarNomCampos(self,campo1,campo2,campo3):
+    def cargarNomCampos(self,campo1:str,campo2:str,campo3:str):
         self.campo1=campo1
         self.campo2=campo2
         self.campo3=campo3
@@ -75,7 +75,7 @@ class FrameTabla(tkinter.LabelFrame):
 
 
     #Funcion que me devuelve una lista de los widgets dentro de un Frame
-    def hijosFrame(self, framePadre):
+    def hijosFrame(self, framePadre:Any):
         listaChildren = framePadre.winfo_children()
         return listaChildren
 
@@ -117,7 +117,7 @@ class FrameTabla(tkinter.LabelFrame):
         btnActualizar.grid(row=1,column=2,sticky="we")
         btnSalir.grid(row=1,column=3,sticky="we")
 
-    def llenarGrillaUnaFila(self,codigoInput,descripcionInput,estadoRegistroInput):
+    def llenarGrillaUnaFila(self,codigoInput:str,descripcionInput:str,estadoRegistroInput:str):
         widgeDeFrameTabla = self.hijosFrame(self.tabla)
         widgeDeFrameTabla[0].insert("",tkinter.END,values=(codigoInput,descripcionInput,estadoRegistroInput))
 
@@ -202,7 +202,7 @@ class FrameTabla(tkinter.LabelFrame):
         #destruyo al padre jejejje
         self.master.destroy()
 
-    def putTextInputs(self,codigoInput,descripcionInput,estadoRegistroInput):
+    def putTextInputs(self,codigoInput:str,descripcionInput:str,estadoRegistroInput:str):
         print("entro a colocar texto")
         self.valorPre.set(codigoInput)
         self.valorDes.set(descripcionInput)
@@ -293,7 +293,7 @@ class FrameTabla(tkinter.LabelFrame):
 
 
 
-    def mostrarVentanaEmergente(self,mensaje):
+    def mostrarVentanaEmergente(self,mensaje:str):
         ventanaEmergente = tkinter.Toplevel(self)
         ventanaEmergente.title("Warning")
         etiqueta = tkinter.Label(ventanaEmergente,text=mensaje)
