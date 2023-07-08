@@ -116,6 +116,13 @@ class FrameTabla(tkinter.LabelFrame):
         widgeDeFrameTabla[0].insert("",tkinter.END,values=(codigoInput,descripcionInput,estadoRegistroInput))
 
     def llenarTodaGrilla(self):
+        widgeDeFrameTabla = self.hijosFrame(self.tabla)
+        grilla = widgeDeFrameTabla[0]
+        filas = grilla.get_children()
+        print("filas",filas)
+        for fila in filas:
+            if grilla.item(fila):
+                grilla.delete(fila)
         print(self.elementosGrilla)
         for registro in self.elementosGrilla:
             self.llenarGrillaUnaFila(str(registro[0]),registro[2],registro[1])
