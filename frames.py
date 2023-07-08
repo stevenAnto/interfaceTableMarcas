@@ -12,6 +12,10 @@ class FrameTabla(tkinter.LabelFrame):
         #control del input de estado de Registro. Se crea antes la variable
         self.valorPre= tkinter.StringVar()
         self.valorPre.set("")
+        self.valorDes= tkinter.StringVar()
+        self.valorDes.set("")
+        self.valorEst= tkinter.StringVar()
+        self.valorEst.set("")
 
         self.titulo =kwargs["text"]
         self.registro = tkinter.LabelFrame(self, text=nombreFrame1)
@@ -34,7 +38,7 @@ class FrameTabla(tkinter.LabelFrame):
         self.actualizarElementosGrilla()
         self.llenarTodaGrilla()
 
-        #Nombres que hacen referencia al nombre de la tabla
+        #Nombres que hacen referencia a los campos de la tabla
         self.campo1 = ""
         self.campo2 = ""
         self.campo3 = ""
@@ -58,10 +62,12 @@ class FrameTabla(tkinter.LabelFrame):
         estadoRegistro.grid(row=2,column=0)
         #Inputs
 
-        codigoEntrada =tkinter.Entry(self.registro,width=10,state="disabled")
-        descripcionEntrada =tkinter.Entry(self.registro,width=60,state="disabled")
-        estadoRegistroEntrada =tkinter.Entry(self.registro,width=2,state="disabled",
+        codigoEntrada =tkinter.Entry(self.registro,width=10,state="disabled",
                 textvariable=self.valorPre)
+        descripcionEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
+                textvariable=self.valorDes)
+        estadoRegistroEntrada =tkinter.Entry(self.registro,width=2,state="disabled",
+                textvariable=self.valorEst)
         #posicinamos
         codigoEntrada.grid(row=0,column=1, sticky="w")
         descripcionEntrada.grid(row=1,column=1, sticky="we")
@@ -92,13 +98,13 @@ class FrameTabla(tkinter.LabelFrame):
     def widgetsBotones(self):
         #creo botones
         btnAdicionar = tkinter.Button(self.botones, text="Adicionar", command=self.adicionar)
-        btnModificar = tkinter.Button(self.botones, text="Modificar")
+        btnModificar = tkinter.Button(self.botones, text="Modificar", command=self.modificar)
         btnEliminar = tkinter.Button(self.botones, text="Eliminar")
-        btnCancelar = tkinter.Button(self.botones, text="Cancelar")
-        btnInactivar = tkinter.Button(self.botones, text="Inactivar")
+        btnCancelar = tkinter.Button(self.botones, text="Cancelar", command=self.cancelar)
+        btnInactivar = tkinter.Button(self.botones, text="Inactivar", command=self.inactivar)
         btnReactivar = tkinter.Button(self.botones, text="Reactivar")
         btnActualizar = tkinter.Button(self.botones, text="Actualizar", command=self.actualizar)
-        btnSalir = tkinter.Button(self.botones, text="Salir")
+        btnSalir = tkinter.Button(self.botones, text="Salir", command=self.salir)
         #posicionamos botones
 
         self.botones.columnconfigure((0, 1, 2,3), weight=1)
@@ -120,19 +126,87 @@ class FrameTabla(tkinter.LabelFrame):
         grilla = widgeDeFrameTabla[0]
         filas = grilla.get_children()
         print("filas",filas)
+        #vaciar grilla
         for fila in filas:
             if grilla.item(fila):
                 grilla.delete(fila)
         print(self.elementosGrilla)
+        #llenar de nuevo
         for registro in self.elementosGrilla:
             self.llenarGrillaUnaFila(str(registro[0]),registro[2],registro[1])
 
 
     def adicionar(self):
         self.habilitar()
-        self.valorPre.set("A")
+        self.valorEst.set("A")
         self.estadoBotonActualizar="adicionar"
 
+    def inactivar(self):
+        widgeDeFrameTabla = self.hijosFrame(self.tabla)
+        grilla = widgeDeFrameTabla[0]
+        seleccion = grilla.selection()
+        if seleccion:
+            self.estadoBotonActualizar="inactivar"
+            itemp =seleccion[0]
+            valores = grilla.item(itemp,"values")
+            self.putTextInputs(valores[0],valores[1],"I")
+        else:
+            self.mostrarVentanaEmergente("no hay seleciion")
+
+    def reactivar(self):
+        widgeDeFrameTabla = self.hijosFrame(self.tabla)
+        grilla = widgeDeFrameTabla[0]
+        seleccion = grilla.selection()
+        if seleccion:
+            self.estadoBotonActualizar="reactivar"
+            itemp =seleccion[0]
+            valores = grilla.item(itemp,"values")
+            self.putTextInputs(valores[0],valores[1],"A")
+        else:
+            self.mostrarVentanaEmergente("no hay seleciion")
+
+    def eliminar(self):
+        widgeDeFrameTabla = self.hijosFrame(self.tabla)
+        grilla = widgeDeFrameTabla[0]
+        seleccion = grilla.selection()
+        if seleccion:
+            self.estadoBotonActualizar="eliminar"
+            itemp =seleccion[0]
+            valores = grilla.item(itemp,"values")
+            self.putTextInputs(valores[0],valores[1],"*")
+        else:
+            self.mostrarVentanaEmergente("no hay seleciion")
+
+    def modificar(self):
+        widgeDeFrameTabla = self.hijosFrame(self.tabla)
+        grilla = widgeDeFrameTabla[0]
+        seleccion = grilla.selection()
+        if seleccion:
+            self.estadoBotonActualizar="modificar"
+            itemp =seleccion[0]
+            valores = grilla.item(itemp,"values")
+            self.putTextInputs(valores[0],"",valores[2])
+            inputs = self.hijosFrame(self.registro)
+            inputs[4]["state"]="normal"
+        else:
+            self.mostrarVentanaEmergente("no hay seleciion")
+
+    def cancelar(self):
+        self.estadoBotonActualizar=""
+        self.blanqueoInputs()
+        self.deshabilitar()
+        self.actualizarElementosGrilla()
+        self.llenarTodaGrilla()
+
+    def salir(self):
+        #destruyo al padre jejejje
+        self.master.destroy()
+
+    def putTextInputs(self,codigoInput,descripcionInput,estadoRegistroInput):
+        print("entro a colocar texto")
+        self.valorPre.set(codigoInput)
+        self.valorDes.set(descripcionInput)
+        self.valorEst.set(estadoRegistroInput)
 
     def habilitar(self):
         print("se habilito inputs")
@@ -153,9 +227,9 @@ class FrameTabla(tkinter.LabelFrame):
     def blanqueoInputs(self):
         print("entro blanqueoInputs")
         inputs = self.hijosFrame(self.registro)
-        inputs[3].delete(0,tkinter.END)
-        inputs[4].delete(0,tkinter.END)
-        inputs[5].delete(0,tkinter.END)
+        self.valorPre.set("")
+        self.valorDes.set("")
+        self.valorEst.set("")
 
 
     def actualizarElementosGrilla(self)->List:
@@ -164,6 +238,7 @@ class FrameTabla(tkinter.LabelFrame):
         self.conexionTabla.close()
 
     def actualizar(self):
+        print("entro a actualizar con boton ", self.estadoBotonActualizar)
         #tomo los datos de los inputs
         inputs= self.hijosFrame(self.registro)
         codigoInput = inputs[3].get()
@@ -188,6 +263,34 @@ class FrameTabla(tkinter.LabelFrame):
             self.llenarTodaGrilla()
             print(f"insertar {insertar}")
             self.mostrarVentanaEmergente(insertar)
+        elif self.estadoBotonActualizar =="inactivar":
+            print("entro inactivar")
+            self.conexionTabla.connect()
+            actualizar = self.conexionTabla.update_record(self.titulo,self.campo1,
+                    int(codigoInput),diccionario)
+            self.conexionTabla.close()
+            self.blanqueoInputs()
+            self.deshabilitar()
+            self.actualizarElementosGrilla()
+            self.llenarTodaGrilla()
+            print(f"insertar {actualizar}")
+            self.mostrarVentanaEmergente(actualizar)
+        elif self.estadoBotonActualizar=="reactivar":
+            print("se reactivar")
+        elif self.estadoBotonActualizar=="eliminar":
+            print("se eliminara")
+        elif self.estadoBotonActualizar=="modificar":
+            print("se modificara")
+            self.conexionTabla.connect()
+            actualizar = self.conexionTabla.update_record(self.titulo,self.campo1,
+                    int(codigoInput),diccionario)
+            self.conexionTabla.close()
+            self.blanqueoInputs()
+            self.deshabilitar()
+            self.actualizarElementosGrilla()
+            self.llenarTodaGrilla()
+
+
 
 
     def mostrarVentanaEmergente(self,mensaje):
