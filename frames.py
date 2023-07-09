@@ -99,10 +99,10 @@ class FrameTabla(tkinter.LabelFrame):
         #creo botones
         btnAdicionar = tkinter.Button(self.botones, text="Adicionar", command=self.adicionar)
         btnModificar = tkinter.Button(self.botones, text="Modificar", command=self.modificar)
-        btnEliminar = tkinter.Button(self.botones, text="Eliminar")
+        btnEliminar = tkinter.Button(self.botones, text="Eliminar", command=self.eliminar)
         btnCancelar = tkinter.Button(self.botones, text="Cancelar", command=self.cancelar)
         btnInactivar = tkinter.Button(self.botones, text="Inactivar", command=self.inactivar)
-        btnReactivar = tkinter.Button(self.botones, text="Reactivar")
+        btnReactivar = tkinter.Button(self.botones, text="Reactivar", command=self.reactivar)
         btnActualizar = tkinter.Button(self.botones, text="Actualizar", command=self.actualizar)
         btnSalir = tkinter.Button(self.botones, text="Salir", command=self.salir)
         #posicionamos botones
@@ -220,8 +220,24 @@ class FrameTabla(tkinter.LabelFrame):
             self.mostrarVentanaEmergente(actualizar)
         elif self.estadoBotonActualizar=="reactivar":
             print("se reactivar")
+            self.conexionTabla.connect()
+            actualizar = self.conexionTabla.update_record(self.titulo,self.campo1,
+                    int(codigoInput),diccionario)
+            self.conexionTabla.close()
+            self.blanqueoInputs()
+            self.deshabilitar()
+            self.actualizarElementosGrilla()
+            self.llenarTodaGrilla()
         elif self.estadoBotonActualizar=="eliminar":
             print("se eliminara")
+            self.conexionTabla.connect()
+            actualizar = self.conexionTabla.update_record(self.titulo,self.campo1,
+                    int(codigoInput),diccionario)
+            self.conexionTabla.close()
+            self.blanqueoInputs()
+            self.deshabilitar()
+            self.actualizarElementosGrilla()
+            self.llenarTodaGrilla()
         elif self.estadoBotonActualizar=="modificar":
             print("se modificara")
             self.conexionTabla.connect()
