@@ -61,7 +61,7 @@ class Connection:
             print("Failed to update record:", error)
             return error
 
-    def recuperarDatosTabla(self, table:str)->str:
+    def recuperarDatosTabla(self, table:str)->List:
         try:
             cursor = self.connection.cursor()
             query = f"SELECT * FROM {table}"
