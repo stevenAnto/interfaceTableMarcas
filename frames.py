@@ -191,8 +191,8 @@ class FrameTabla(tkinter.LabelFrame):
         print(self.campo1,self.campo2,self.campo3)
         diccionario ={
                 self.campo1:int(codigoInput),
-                self.campo2:estadoRegistroInput,
-                self.campo3:descripcionInput,
+                self.campo2:descripcionInput,
+                self.campo3:estadoRegistroInput,
                 }
         print(diccionario)
         if self.estadoBotonActualizar=="adicionar":
