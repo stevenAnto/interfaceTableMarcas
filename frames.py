@@ -271,7 +271,7 @@ class FrameTabla(tkinter.LabelFrame):
         print(self.elementosGrilla)
         #llenar de nuevo
         for registro in self.elementosGrilla:
-            self.llenarGrillaUnaFila(str(registro[0]),registro[2],registro[1])
+            self.llenarGrillaUnaFila(str(registro[0]),registro[1],registro[2])
 
 
 
