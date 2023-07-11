@@ -184,7 +184,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="inactivar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[5],valores[6],valores[7],"I")
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],valores[6],"I")
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
 
@@ -196,7 +196,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="reactivar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[5],valores[6],valores[7],"A")
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],valores[6],"A")
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
 
@@ -208,7 +208,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="eliminar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[5],valores[6],valores[7],"*")
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],valores[6],"*")
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
 
@@ -220,14 +220,15 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="modificar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],"",valores[8])
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],valores[6],valores[7])
             inputs = self.hijosFrame(self.registro)
-            inputs[8]["state"]="normal"
             inputs[9]["state"]="normal"
             inputs[10]["state"]="normal"
             inputs[11]["state"]="normal"
             inputs[12]["state"]="normal"
             inputs[13]["state"]="normal"
+            inputs[14]["state"]="normal"
+
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
 
@@ -339,7 +340,7 @@ class FrameTabla(tkinter.LabelFrame):
         print(self.elementosGrilla)
         #llenar de nuevo
         for registro in self.elementosGrilla:
-            self.llenarGrillaUnaFila(str(registro[0]),registro[1],registro[2],registro[3],registro[4],registro[5],registro[6],registro[7],registro[8])
+            self.llenarGrillaUnaFila(str(registro[0]),registro[1],str(registro[2]),str(registro[3]),str(registro[4]),registro[5],str(registro[6]),registro[7])
 
 
 
