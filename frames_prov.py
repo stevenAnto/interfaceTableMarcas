@@ -95,15 +95,15 @@ class FrameTabla(tkinter.LabelFrame):
         descripcionEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
                 textvariable=self.valorNom)
         anioEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
-                textvariable=self.valorNom)
+                textvariable=self.valorAnio)
         mesEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
-                textvariable=self.valorNom)
+                textvariable=self.valorMes)
         diaEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
-                textvariable=self.valorNom)
+                textvariable=self.valorDia)
         dirEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
-                textvariable=self.valorNom)
+                textvariable=self.valorDir)
         zonaEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
-                textvariable=self.valorNom)
+                textvariable=self.valorZon)
         estadoRegistroEntrada =tkinter.Entry(self.registro,width=2,state="disabled",
                 textvariable=self.valorEst)
         #posicinamos
@@ -222,12 +222,12 @@ class FrameTabla(tkinter.LabelFrame):
             valores = grilla.item(itemp,"values")
             self.putTextInputs(valores[0],"",valores[8])
             inputs = self.hijosFrame(self.registro)
-            inputs[4]["state"]="normal"
-            inputs[5]["state"]="normal"
-            inputs[6]["state"]="normal"
-            inputs[7]["state"]="normal"
             inputs[8]["state"]="normal"
             inputs[9]["state"]="normal"
+            inputs[10]["state"]="normal"
+            inputs[11]["state"]="normal"
+            inputs[12]["state"]="normal"
+            inputs[13]["state"]="normal"
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
 
@@ -242,14 +242,14 @@ class FrameTabla(tkinter.LabelFrame):
         print("entro a actualizar con boton ", self.estadoBotonActualizar)
         #tomo los datos de los inputs
         inputs= self.hijosFrame(self.registro)
-        codigoInput = inputs[3].get()
-        descripcionInput = inputs[4].get()
-        anioInput = inputs[5].get()
-        mesInput = inputs[6].get()
-        diaInput = inputs[7].get()
-        dirInput = inputs[8].get()
-        zonInput = inputs[9].get()
-        estadoRegistroInput = inputs[10].get()
+        codigoInput = inputs[8].get()
+        descripcionInput = inputs[9].get()
+        anioInput = inputs[10].get()
+        mesInput = inputs[11].get()
+        diaInput = inputs[12].get()
+        dirInput = inputs[13].get()
+        zonInput = inputs[14].get()
+        estadoRegistroInput = inputs[15].get()
         print(codigoInput,descripcionInput,anioInput,mesInput,diaInput,dirInput,zonInput,estadoRegistroInput)
         print(self.campo1,self.campo2,self.campo3,self.campo4,self.campo5,self.campo6,self.campo7,self.campo8)
         diccionario ={
@@ -358,27 +358,27 @@ class FrameTabla(tkinter.LabelFrame):
         print("se habilito inputs")
         inputs = self.hijosFrame(self.registro)
         print(len(inputs))
-        inputs[3]["state"]="normal"
-        inputs[4]["state"]="normal"
-        inputs[5]["state"]="normal"
-        inputs[6]["state"]="normal"
-        inputs[7]["state"]="normal"
         inputs[8]["state"]="normal"
         inputs[9]["state"]="normal"
-        inputs[10]["state"]="disabled"
+        inputs[10]["state"]="normal"
+        inputs[11]["state"]="normal"
+        inputs[12]["state"]="normal"
+        inputs[13]["state"]="normal"
+        inputs[14]["state"]="normal"
+        inputs[15]["state"]="disabled"
 
     def deshabilitar(self):
         print("se habilito inputs")
         inputs = self.hijosFrame(self.registro)
         print(len(inputs))
-        inputs[3]["state"]="disabled"
-        inputs[4]["state"]="disabled"
-        inputs[5]["state"]="disabled"
-        inputs[6]["state"]="disabled"
-        inputs[7]["state"]="disabled"
         inputs[8]["state"]="disabled"
         inputs[9]["state"]="disabled"
         inputs[10]["state"]="disabled"
+        inputs[11]["state"]="disabled"
+        inputs[12]["state"]="disabled"
+        inputs[13]["state"]="disabled"
+        inputs[14]["state"]="disabled"
+        inputs[15]["state"]="disabled"
 
 
     def blanqueoInputs(self):
