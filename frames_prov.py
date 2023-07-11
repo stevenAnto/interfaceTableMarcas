@@ -255,11 +255,11 @@ class FrameTabla(tkinter.LabelFrame):
         diccionario ={
                 self.campo1:int(codigoInput),
                 self.campo2:descripcionInput,
-                self.campo3:anioInput,
-                self.campo4:mesInput,
-                self.campo5:diaInput,
+                self.campo3:int(anioInput),
+                self.campo4:int(mesInput),
+                self.campo5:int(diaInput),
                 self.campo6:dirInput,
-                self.campo7:zonInput,
+                self.campo7:int(zonInput),
                 self.campo8:estadoRegistroInput,
                 }
         print(diccionario)

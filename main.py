@@ -71,7 +71,7 @@ if flag:
         nombreFrame2="GAAax2",
         datosConexion=datosConexion
     )
-    tablaMantenimiento.cargarNomCampos("ProCod","ProNom","ProFecInsProAño","ProFecInsProMes","ProFecInsProDia", "ProDir", "ProZon", "ZonEstReg")
+    tablaMantenimiento.cargarNomCampos("ProCod","ProNom","ProFecInsProAño","ProFecInsProMes","ProFecInsProDia", "ProDir", "ProZon", "ProEstReg")
 
     # Poner título al padre
     tablaMantenimiento.master.title("Mantenimiento tabla Zonas")
