@@ -1,23 +1,31 @@
 import tkinter as tk
 import mysql.connector
-import frames as f
-connection = None
+import frames_prov as f
+
 flag = False
+user = None
+password = None
+
 def login():
-    username = username_entry.get()
+    global user, password
+    user = username_entry.get()
     password = password_entry.get()
 
     try:
         connection = mysql.connector.connect(
             host='localhost', 
             port=3306, 
-            user=username, 
-            password=password, 
+            user=user, 
+            password=password,
             database='control_stock_libreria'
         )
         window.destroy()
+        
+        # Cerrar la conexión a la base de datos
+        connection.close()
         global flag 
         flag = True
+
     except mysql.connector.Error as e:
         connection = None
         error_label.config(text=f"Usuario y/o contraseña incorrectos", fg="red")
@@ -49,10 +57,10 @@ window.mainloop()
 if flag:
     host = 'localhost'
     port = 3306
-    user = 'root'
-    password = 'root'
+    user = user
+    password = password
     database = 'control_stock_libreria'
-    titulo = "GZZ_MARCA"
+    titulo = "L1M_PROVEEDOR"
     window = tk.Tk()
     datosConexion = (host, port, user, password, database)
 
@@ -63,7 +71,7 @@ if flag:
         nombreFrame2="GAAax2",
         datosConexion=datosConexion
     )
-    tablaMantenimiento.cargarNomCampos("MarCod", "MarNom", "MarEstReg")
+    tablaMantenimiento.cargarNomCampos("ProCod","ProNom","ProFecInsProAño","ProFecInsProMes","ProFecInsProDia", "ProDir", "ProZon", "ZonEstReg")
 
     # Poner título al padre
     tablaMantenimiento.master.title("Mantenimiento tabla Zonas")
@@ -71,5 +79,4 @@ if flag:
 
     window.mainloop()
 
-    # Cerrar la conexión a la base de datos
-    connection.close()
+
