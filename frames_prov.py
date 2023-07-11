@@ -1,5 +1,5 @@
 import tkinter
-import connection_prov as c
+import connection as c
 from tkinter import ttk
 from typing import Dict, List, Tuple, Any
 
