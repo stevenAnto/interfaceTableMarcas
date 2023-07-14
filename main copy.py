@@ -1,7 +1,7 @@
 import tkinter as tk
 import mysql.connector
-import frames as f
-import frames_prov as fp
+import frames_ref as f
+import frames_pro_cli as fp
 
 flag = False
 user = None
@@ -112,6 +112,16 @@ def abrir_tabla(tabla):
             datosConexion=datosConexion
         )
         tablaMantenimiento.cargarNomCampos("CliCod", "CliNom", "CliFecInsProAño", "CliFecInsProMes", "CliFecInsProDia", "CliDir", "CliZon", "CliEstReg")
+
+    elif tabla == 'L1T_STOCK_ENTRADA_CAB':
+        tablaMantenimiento = fp.FrameTabla(
+            master=window,
+            text=titulo,
+            nombreFrame1="Inputs",
+            nombreFrame2="Registros",
+            datosConexion=datosConexion
+        )
+        tablaMantenimiento.cargarNomCampos("StoEntCabCod","StoEntCabFecInsAño","StoEntCabFecInsMes","StoEntCabFecInsDia", "StoEntCabPro", "StoEntCanEstReg", "EmpCod")
 
     # Poner título al padre
     tablaMantenimiento.master.title(f"Mantenimiento tabla {tabla.capitalize()}")

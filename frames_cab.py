@@ -83,8 +83,8 @@ class FrameTabla(tkinter.LabelFrame):
         mes.grid(row=2,column=0, sticky="nswe")
         dia.grid(row=3,column=0, sticky="nswe")
         proveedor.grid(row=4,column=0, sticky="nswe")
-        estadoRegistro.grid(row=5,column=0)
-        emp.grid(row=6,column=0, sticky="nswe")
+        estadoRegistro.grid(row=6,column=0)
+        emp.grid(row=5,column=0, sticky="nswe")
         
         #Inputs
 
@@ -104,12 +104,12 @@ class FrameTabla(tkinter.LabelFrame):
                 textvariable=self.valorEmp)
         #posicinamos
         codigoEntrada.grid(row=0,column=1, sticky="w")
-        anioEntrada.grid(row=2,column=1, sticky="we")
-        mesEntrada.grid(row=3,column=1, sticky="we")
-        diaEntrada.grid(row=4,column=1, sticky="we")
-        proveedorEntrada.grid(row=5,column=1, sticky="we")
+        anioEntrada.grid(row=1,column=1, sticky="we")
+        mesEntrada.grid(row=2,column=1, sticky="we")
+        diaEntrada.grid(row=3,column=1, sticky="we")
+        proveedorEntrada.grid(row=4,column=1, sticky="we")
         estadoRegistroEntrada.grid(row=6,column=1,sticky="w")
-        empEntrada.grid(row=7,column=1, sticky="we")
+        empEntrada.grid(row=5,column=1, sticky="we")
 
 
 
@@ -178,7 +178,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="inactivar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],"I",valores[6])
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],"I",valores[6])
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
 
@@ -190,7 +190,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="reactivar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],"A",valores[6])
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],"A",valores[6])
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
 
@@ -202,7 +202,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="eliminar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],"*",valores[6])
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],"*",valores[6])
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
 
@@ -343,9 +343,9 @@ class FrameTabla(tkinter.LabelFrame):
         self.valorAnio.set(anioInput)
         self.valorMes.set(mesInput)
         self.valorDia.set(diaInput)
-        self.valorDir.set(proInput)
+        self.valorPro.set(proInput)
         self.valorEst.set(estadoRegistroInput)
-        self.valorZon.set(empInput)
+        self.valorEmp.set(empInput)
 
 
     def habilitar(self):
