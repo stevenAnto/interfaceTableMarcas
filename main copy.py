@@ -123,6 +123,16 @@ def abrir_tabla(tabla):
         )
         tablaMantenimiento.cargarNomCampos("StoEntCabCod","StoEntCabFecInsAño","StoEntCabFecInsMes","StoEntCabFecInsDia", "StoEntCabPro", "StoEntCanEstReg", "EmpCod")
 
+    elif tabla == 'L1M_ARTICULO':
+        tablaMantenimiento = fp.FrameTabla(
+            master=window,
+            text=titulo,
+            nombreFrame1="Inputs",
+            nombreFrame2="Registros",
+            datosConexion=datosConexion
+        )
+        tablaMantenimiento.cargarNomCampos("ArtCod","ArtNom","ArtCan","ArtDes", "ArtEstReg", "ArtMar", "UniMedCod")
+
     # Poner título al padre
     tablaMantenimiento.master.title(f"Mantenimiento tabla {tabla.capitalize()}")
     tablaMantenimiento.grid(row=1, column=0, sticky="nswe")

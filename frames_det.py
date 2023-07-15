@@ -12,18 +12,12 @@ class FrameTabla(tkinter.LabelFrame):
         #control del input de estado de Registro. Se crea antes la variable
         self.valorCod= tkinter.StringVar()
         self.valorCod.set("")
-        self.valorNom= tkinter.StringVar()
-        self.valorNom.set("")
-        self.valorAnio= tkinter.StringVar()
-        self.valorAnio.set("")
-        self.valorMes= tkinter.StringVar()
-        self.valorMes.set("")
-        self.valorDia= tkinter.StringVar()
-        self.valorDia.set("")
-        self.valorDir= tkinter.StringVar()
-        self.valorDir.set("")
-        self.valorZon= tkinter.StringVar()
-        self.valorZon.set("")
+        self.valorCan= tkinter.StringVar()
+        self.valorCan.set("")
+        self.valorCabCod= tkinter.StringVar()
+        self.valorCabCod.set("")
+        self.valorArt= tkinter.StringVar()
+        self.valorArt.set("")
         self.valorEst= tkinter.StringVar()
         self.valorEst.set("")
 
@@ -54,67 +48,48 @@ class FrameTabla(tkinter.LabelFrame):
         self.campo3 = ""
         self.campo4 = ""
         self.campo5 = ""
-        self.campo6 = ""
-        self.campo7 = ""
-        self.campo8 = ""
+
         #En vista que el boton actualizar realizar muchas tareas se creara sus estados
         self.estadoBotonActualizar=""
-    def cargarNomCampos(self,campo1:str,campo2:str,campo3:str,campo4:str,campo5:str,campo6:str,campo7:str,campo8:str):
+    def cargarNomCampos(self,campo1:str,campo2:str,campo3:str,campo4:str,campo5:str):
         self.campo1=campo1
         self.campo2=campo2
         self.campo3=campo3
         self.campo4=campo4
         self.campo5=campo5
-        self.campo6=campo6
-        self.campo7=campo7
-        self.campo8=campo8
+
 
     def widgetsRegistro(self):
         #Labels
         codigo = tkinter.Label(self.registro, text="Codigo", anchor="w")
-        descripcion = tkinter.Label(self.registro, text="Descripcion", anchor="w")
-        anio = tkinter.Label(self.registro, text="año", anchor="w")
-        mes = tkinter.Label(self.registro, text="mes", anchor="w")
-        dia = tkinter.Label(self.registro, text="dia", anchor="w")
-        dir = tkinter.Label(self.registro, text="dir", anchor="w")
-        zona = tkinter.Label(self.registro, text="zona", anchor="w")
+        cantidad = tkinter.Label(self.registro, text="cantidad", anchor="w")
+        cabcod = tkinter.Label(self.registro, text="Código cabecera", anchor="w")
+        articulo = tkinter.Label(self.registro, text="articulo", anchor="w")
         estadoRegistro = tkinter.Label(self.registro, text="Estado Registro", anchor="w")
         #posicinamos
         codigo.grid(row=0,column=0, sticky="new")
-        descripcion.grid(row=1,column=0, sticky="nswe")
-        anio.grid(row=2,column=0, sticky="nswe")
-        mes.grid(row=3,column=0, sticky="nswe")
-        dia.grid(row=4,column=0, sticky="nswe")
-        dir.grid(row=5,column=0, sticky="nswe")
-        zona.grid(row=6,column=0, sticky="nswe")
-        estadoRegistro.grid(row=7,column=0)
+        cantidad.grid(row=1,column=0, sticky="nswe")
+        cabcod.grid(row=2,column=0, sticky="nswe")
+        articulo.grid(row=3,column=0, sticky="nswe")
+        estadoRegistro.grid(row=4,column=0)
         #Inputs
 
         codigoEntrada =tkinter.Entry(self.registro,width=10,state="disabled",
                 textvariable=self.valorCod)
-        descripcionEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
-                textvariable=self.valorNom)
-        anioEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
-                textvariable=self.valorAnio)
-        mesEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
-                textvariable=self.valorMes)
-        diaEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
-                textvariable=self.valorDia)
-        dirEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
-                textvariable=self.valorDir)
-        zonaEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
-                textvariable=self.valorZon)
+        cantidadEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
+                textvariable=self.valorCan)
+        cabcodEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
+                textvariable=self.valorCabCod)
+        articuloEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
+                textvariable=self.valorArt)
         estadoRegistroEntrada =tkinter.Entry(self.registro,width=2,state="disabled",
                 textvariable=self.valorEst)
         #posicinamos
         codigoEntrada.grid(row=0,column=1, sticky="w")
-        descripcionEntrada.grid(row=1,column=1, sticky="we")
-        anioEntrada.grid(row=2,column=1, sticky="we")
-        mesEntrada.grid(row=3,column=1, sticky="we")
-        diaEntrada.grid(row=4,column=1, sticky="we")
-        dirEntrada.grid(row=5,column=1, sticky="we")
-        zonaEntrada.grid(row=6,column=1, sticky="we")
-        estadoRegistroEntrada.grid(row=7,column=1,sticky="w")
+        cantidadEntrada.grid(row=1,column=1, sticky="we")
+        cabcodEntrada.grid(row=2,column=1, sticky="we")
+        articuloEntrada.grid(row=3,column=1, sticky="we")
+        estadoRegistroEntrada.grid(row=4,column=1,sticky="w")
 
 
     #Funcion que me devuelve una lista de los widgets dentro de un Frame
@@ -124,26 +99,19 @@ class FrameTabla(tkinter.LabelFrame):
 
     def widgetsTabla(self):
         #agremos un treeview
-        grilla = ttk.Treeview(self.tabla, columns=("codigo","descripcion","anio","mes","dia","dir","zon","estado"))
+        grilla = ttk.Treeview(self.tabla, columns=("codigo","cantidad","cabcod","articulo","estado"))
         grilla.column("#0",width=5)
         grilla.column("codigo",width=60)
-        grilla.column("descripcion",width=600)
-        grilla.column("anio",width=60)
-        grilla.column("mes",width=60)
-        grilla.column("dia",width=60)
-        grilla.column("dir",width=60)
-        grilla.column("zon",width=60)
+        grilla.column("cantidad",width=60)
+        grilla.column("cabcod",width=60)
+        grilla.column("articulo",width=60)
         grilla.column("estado",width=60)
 #por defecto crea la primera columa
         grilla.heading("codigo", text="Código")
-        grilla.heading("descripcion", text="Descripción")
-        grilla.heading("anio", text="Año")
-        grilla.heading("mes", text="Mes")
-        grilla.heading("dia", text="Dia")
-        grilla.heading("dir", text="Direccion")
-        grilla.heading("zon", text="Zona")
+        grilla.heading("cantidad", text="Cantidad")
+        grilla.heading("cabcod", text="CabCod")
+        grilla.heading("articulo", text="Articulo")
         grilla.heading("estado", text="Estado")
-
 
 
         grilla.grid(row=0,column=0)
@@ -184,7 +152,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="inactivar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],valores[6],"I")
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],"I")
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
 
@@ -196,7 +164,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="reactivar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],valores[6],"A")
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],"A")
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
 
@@ -208,7 +176,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="eliminar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],valores[6],"*")
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],"*")
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
 
@@ -220,14 +188,13 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="modificar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],valores[6],valores[7])
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4])
             inputs = self.hijosFrame(self.registro)
-            inputs[9]["state"]="normal"
-            inputs[10]["state"]="normal"
-            inputs[11]["state"]="normal"
-            inputs[12]["state"]="normal"
-            inputs[13]["state"]="normal"
-            inputs[14]["state"]="normal"
+            inputs[5]["state"]="disabled"
+            inputs[6]["state"]="normal"
+            inputs[7]["state"]="normal"
+            inputs[8]["state"]="normal"
+            inputs[9]["state"]="disabled"
 
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
@@ -243,25 +210,19 @@ class FrameTabla(tkinter.LabelFrame):
         print("entro a actualizar con boton ", self.estadoBotonActualizar)
         #tomo los datos de los inputs
         inputs= self.hijosFrame(self.registro)
-        codigoInput = inputs[8].get()
-        descripcionInput = inputs[9].get()
-        anioInput = inputs[10].get()
-        mesInput = inputs[11].get()
-        diaInput = inputs[12].get()
-        dirInput = inputs[13].get()
-        zonInput = inputs[14].get()
-        estadoRegistroInput = inputs[15].get()
-        print(codigoInput,descripcionInput,anioInput,mesInput,diaInput,dirInput,zonInput,estadoRegistroInput)
-        print(self.campo1,self.campo2,self.campo3,self.campo4,self.campo5,self.campo6,self.campo7,self.campo8)
+        codigoInput = inputs[5].get()
+        cantidadInput = inputs[6].get()
+        cabcodInput = inputs[7].get()
+        articuloInput = inputs[8].get()
+        estadoRegistroInput = inputs[9].get()
+        print(codigoInput,cantidadInput,cabcodInput,articuloInput,estadoRegistroInput)
+        print(self.campo1,self.campo2,self.campo3,self.campo4,self.campo5)
         diccionario ={
                 self.campo1:int(codigoInput),
-                self.campo2:descripcionInput,
-                self.campo3:int(anioInput),
-                self.campo4:int(mesInput),
-                self.campo5:int(diaInput),
-                self.campo6:dirInput,
-                self.campo7:int(zonInput),
-                self.campo8:estadoRegistroInput,
+                self.campo2:int(cantidadInput),
+                self.campo3:int(cabcodInput),
+                self.campo4:int(articuloInput),
+                self.campo5:estadoRegistroInput,
                 }
         print(diccionario)
         if self.estadoBotonActualizar=="adicionar":
@@ -324,9 +285,9 @@ class FrameTabla(tkinter.LabelFrame):
 
 
     #Funciones auxiliares
-    def llenarGrillaUnaFila(self,codigoInput:str,descripcionInput:str,anioInput:str,mesInput:str,diaInput:str,dirInput:str,zonInput:str,estadoRegistroInput:str):
+    def llenarGrillaUnaFila(self,codigoInput:str,cantidadInput:str,cabcodInput:str,articuloInput:str,estadoRegistroInput:str):
         widgeDeFrameTabla = self.hijosFrame(self.tabla)
-        widgeDeFrameTabla[0].insert("",tkinter.END,values=(codigoInput,descripcionInput,anioInput,mesInput,diaInput,dirInput,zonInput,estadoRegistroInput))
+        widgeDeFrameTabla[0].insert("",tkinter.END,values=(codigoInput,cantidadInput,cabcodInput,articuloInput,estadoRegistroInput))
 
     def llenarTodaGrilla(self):
         widgeDeFrameTabla = self.hijosFrame(self.tabla)
@@ -340,58 +301,46 @@ class FrameTabla(tkinter.LabelFrame):
         print(self.elementosGrilla)
         #llenar de nuevo
         for registro in self.elementosGrilla:
-            self.llenarGrillaUnaFila(str(registro[0]),registro[1],str(registro[2]),str(registro[3]),str(registro[4]),registro[5],str(registro[6]),registro[7])
+            self.llenarGrillaUnaFila(str(registro[0]),str(registro[1]),str(registro[2]),str(registro[3]),registro[4])
 
 
 
-    def putTextInputs(self,codigoInput:str,descripcionInput:str,anioInput:str,mesInput:str,diaInput:str,dirInput:str,zonInput:str,estadoRegistroInput:str):
+    def putTextInputs(self,codigoInput:str,cantidadInput:str,cabcodInput:str,articuloInput:str,estadoRegistroInput:str):
         print("entro a colocar texto")
         self.valorCod.set(codigoInput)
-        self.valorNom.set(descripcionInput)
-        self.valorAnio.set(anioInput)
-        self.valorMes.set(mesInput)
-        self.valorDia.set(diaInput)
-        self.valorDir.set(dirInput)
-        self.valorZon.set(zonInput)
+        self.valorCan.set(cantidadInput)
+        self.valorCabCod.set(cabcodInput)
+        self.valorArt.set(articuloInput)
         self.valorEst.set(estadoRegistroInput)
 
     def habilitar(self):
         print("se habilito inputs")
         inputs = self.hijosFrame(self.registro)
         print(len(inputs))
+        inputs[5]["state"]="normal"
+        inputs[6]["state"]="normal"
+        inputs[7]["state"]="normal"
         inputs[8]["state"]="normal"
-        inputs[9]["state"]="normal"
-        inputs[10]["state"]="normal"
-        inputs[11]["state"]="normal"
-        inputs[12]["state"]="normal"
-        inputs[13]["state"]="normal"
-        inputs[14]["state"]="normal"
-        inputs[15]["state"]="disabled"
+        inputs[9]["state"]="disabled"
 
     def deshabilitar(self):
         print("se habilito inputs")
         inputs = self.hijosFrame(self.registro)
         print(len(inputs))
+        inputs[5]["state"]="disabled"
+        inputs[6]["state"]="disabled"
+        inputs[7]["state"]="disabled"
         inputs[8]["state"]="disabled"
         inputs[9]["state"]="disabled"
-        inputs[10]["state"]="disabled"
-        inputs[11]["state"]="disabled"
-        inputs[12]["state"]="disabled"
-        inputs[13]["state"]="disabled"
-        inputs[14]["state"]="disabled"
-        inputs[15]["state"]="disabled"
 
 
     def blanqueoInputs(self):
         print("entro blanqueoInputs")
         inputs = self.hijosFrame(self.registro)
         self.valorCod.set("")
-        self.valorNom.set("")
-        self.valorAnio.set("")
-        self.valorMes.set("")
-        self.valorDia.set("")
-        self.valorDir.set("")
-        self.valorZon.set("")
+        self.valorCan.set("")
+        self.valorCabCod.set("")
+        self.valorArt.set("")
         self.valorEst.set("")
 
 
@@ -399,7 +348,6 @@ class FrameTabla(tkinter.LabelFrame):
         self.conexionTabla.connect()
         self.elementosGrilla = self.conexionTabla.recuperarDatosTabla(self.titulo)
         self.conexionTabla.close()
-
 
 
 

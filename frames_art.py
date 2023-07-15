@@ -4,8 +4,10 @@ from tkinter import ttk
 from typing import Dict, List, Tuple, Any
 
 class FrameTabla(tkinter.LabelFrame):
+
     def __init__(self, nombreFrame1: str, nombreFrame2: str, master: Any = None, datosConexion: Tuple = None, **kwargs):
         super().__init__(master, **kwargs)
+
         self.valorCod = tkinter.StringVar()
         self.valorCod.set("")
         self.valorNom = tkinter.StringVar()
@@ -31,7 +33,8 @@ class FrameTabla(tkinter.LabelFrame):
         self.widgetsRegistro()
         self.widgetsTabla()
         self.widgetsBotones()
-        self.elementosGrilla = []
+        self.elementosGrilla = [];
+
         self.host = datosConexion[0]
         self.port = datosConexion[1]
         self.user = datosConexion[2]
@@ -41,6 +44,7 @@ class FrameTabla(tkinter.LabelFrame):
         self.actualizarElementosGrilla()
         self.llenarTodaGrilla()
 
+
         self.campo1 = ""
         self.campo2 = ""
         self.campo3 = ""
@@ -48,6 +52,7 @@ class FrameTabla(tkinter.LabelFrame):
         self.campo5 = ""
         self.campo6 = ""
         self.campo7 = ""
+
 
         self.estadoBotonActualizar = ""
 
@@ -61,6 +66,7 @@ class FrameTabla(tkinter.LabelFrame):
         self.campo7 = campo7
 
     def widgetsRegistro(self):
+
         codigo = tkinter.Label(self.registro, text="ArtCod", anchor="w")
         nombre = tkinter.Label(self.registro, text="ArtNom", anchor="w")
         cantidad = tkinter.Label(self.registro, text="ArtCan", anchor="w")
@@ -69,13 +75,16 @@ class FrameTabla(tkinter.LabelFrame):
         marca = tkinter.Label(self.registro, text="ArtMar", anchor="w")
         unidadMedida = tkinter.Label(self.registro, text="UniMedCod", anchor="w")
 
+
         codigo.grid(row=0, column=0, sticky="new")
         nombre.grid(row=1, column=0, sticky="nswe")
-        cantidad.grid(row=2, column=0, sticky="nswe")
-        descripcion.grid(row=3, column=0, sticky="nswe")
-        estadoRegistro.grid(row=4, column=0)
-        marca.grid(row=5, column=0, sticky="nswe")
-        unidadMedida.grid(row=6, column=0, sticky="nswe")
+        cantidad.grid(row=4, column=0, sticky="nswe")
+        descripcion.grid(row=2, column=0, sticky="nswe")
+        estadoRegistro.grid(row=6, column=0)
+        marca.grid(row=3, column=0, sticky="nswe")
+        unidadMedida.grid(row=5, column=0, sticky="nswe")
+
+
 
         codigoEntrada = tkinter.Entry(self.registro, width=10, state="disabled", textvariable=self.valorCod)
         nombreEntrada = tkinter.Entry(self.registro, width=60, state="disabled", textvariable=self.valorNom)
@@ -85,14 +94,28 @@ class FrameTabla(tkinter.LabelFrame):
         marcaEntrada = tkinter.Entry(self.registro, width=60, state="disabled", textvariable=self.valorMar)
         unidadMedidaEntrada = tkinter.Entry(self.registro, width=60, state="disabled", textvariable=self.valorUniMedCod)
 
+
+
+
+
+
+
+
         codigoEntrada.grid(row=0, column=1, sticky="w")
         nombreEntrada.grid(row=1, column=1, sticky="we")
-        cantidadEntrada.grid(row=2, column=1, sticky="we")
-        descripcionEntrada.grid(row=3, column=1, sticky="we")
-        estadoRegistroEntrada.grid(row=4, column=1, sticky="w")
-        marcaEntrada.grid(row=5, column=1, sticky="we")
-        unidadMedidaEntrada.grid(row=6, column=1, sticky="we")
+        cantidadEntrada.grid(row=4, column=1, sticky="we")
+        descripcionEntrada.grid(row=2, column=1, sticky="we")
+        estadoRegistroEntrada.grid(row=6, column=1, sticky="w")
+        marcaEntrada.grid(row=3, column=1, sticky="we")
+        unidadMedidaEntrada.grid(row=5, column=1, sticky="we")
 
+
+
+    #Funcion que me devuelve una lista de los widgets dentro de un Frame
+    def hijosFrame(self, framePadre:Any):
+        listaChildren = framePadre.winfo_children()
+        return listaChildren
+    
     def widgetsTabla(self):
         grilla = ttk.Treeview(self.tabla, columns=("codigo", "nombre", "cantidad", "descripcion", "estado", "marca", "unidadmedida"))
         grilla.column("#0", width=5)
@@ -189,7 +212,7 @@ class FrameTabla(tkinter.LabelFrame):
             inputs[8]["state"]="normal"
             inputs[9]["state"]="normal"
             inputs[10]["state"]="normal"
-            inputs[11]["state"]="normal"
+            inputs[11]["state"]="disabled"
             inputs[12]["state"]="normal"
             inputs[13]["state"]="normal"
 
@@ -207,20 +230,20 @@ class FrameTabla(tkinter.LabelFrame):
         print("entro a actualizar con boton ", self.estadoBotonActualizar)
         #tomo los datos de los inputs
         inputs= self.hijosFrame(self.registro)
-        codigoInput = inputs[8].get()
-        nombreInput = inputs[9].get()
-        cantidadInput = inputs[10].get()
-        descripcionInput = inputs[11].get()
-        estadoRegistroInput = inputs[12].get()
-        marcaInput = inputs[13].get()
-        unidadMedidaInput = inputs[14].get()
+        codigoInput = inputs[7].get()
+        nombreInput = inputs[8].get()
+        cantidadInput = inputs[9].get()
+        descripcionInput = inputs[10].get()
+        estadoRegistroInput = inputs[11].get()
+        marcaInput = inputs[12].get()
+        unidadMedidaInput = inputs[13].get()
         print(codigoInput,nombreInput,cantidadInput,descripcionInput,estadoRegistroInput,marcaInput,unidadMedidaInput)
         print(self.campo1,self.campo2,self.campo3,self.campo4,self.campo5,self.campo6,self.campo7)
         diccionario ={
                 self.campo1:int(codigoInput),
                 self.campo2:nombreInput,
                 self.campo3:int(cantidadInput),
-                self.campo4:int(descripcionInput),
+                self.campo4:descripcionInput,
                 self.campo5:estadoRegistroInput,
                 self.campo6:int(marcaInput),
                 self.campo7:int(unidadMedidaInput),
@@ -320,25 +343,25 @@ class FrameTabla(tkinter.LabelFrame):
         print("se habilito inputs")
         inputs = self.hijosFrame(self.registro)
         print(len(inputs))
+        inputs[7]["state"]="normal"
         inputs[8]["state"]="normal"
         inputs[9]["state"]="normal"
         inputs[10]["state"]="normal"
-        inputs[11]["state"]="normal"
+        inputs[11]["state"]="disabled"
         inputs[12]["state"]="normal"
         inputs[13]["state"]="normal"
-        inputs[14]["state"]="normal"
 
     def deshabilitar(self):
         print("se habilito inputs")
         inputs = self.hijosFrame(self.registro)
         print(len(inputs))
+        inputs[7]["state"]="disabled"
         inputs[8]["state"]="disabled"
         inputs[9]["state"]="disabled"
         inputs[10]["state"]="disabled"
         inputs[11]["state"]="disabled"
         inputs[12]["state"]="disabled"
         inputs[13]["state"]="disabled"
-        inputs[14]["state"]="disabled"
 
 
     def blanqueoInputs(self):

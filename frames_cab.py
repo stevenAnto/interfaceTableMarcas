@@ -3,8 +3,6 @@ import connection as c
 from tkinter import ttk
 from typing import Dict, List, Tuple, Any
 
-
-
 class FrameTabla(tkinter.LabelFrame):
     #nombreFrame1 es el nombre del primer Frame, si el primer Frame es registro y el segundo podria ser grilla o el que crea conveniente
     def __init__(self,nombreFrame1:str,nombreFrame2:str,master:Any=None,datosConexion:Tuple=None, **kwargs):

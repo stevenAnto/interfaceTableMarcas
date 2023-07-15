@@ -167,7 +167,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="modificar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],"",valores[2])
+            self.putTextInputs(valores[0],valores[1],valores[2])
             inputs = self.hijosFrame(self.registro)
             inputs[4]["state"]="normal"
         else:
