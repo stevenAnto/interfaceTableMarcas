@@ -1,7 +1,10 @@
 import tkinter as tk
 import mysql.connector
-import frames_ref as f
+import frames_ref as fr
 import frames_pro_cli as fp
+import frames_cab as fc
+import frames_art as fa
+import frames_det as fd
 
 flag = False
 user = None
@@ -45,7 +48,7 @@ def abrir_tabla(tabla):
     datosConexion = (host, port, user, password, database)
 
     if tabla == 'GZZ_MARCA':
-        tablaMantenimiento = f.FrameTabla(
+        tablaMantenimiento = fr.FrameTabla(
             master=window,
             text=titulo,
             nombreFrame1="Inputs",
@@ -54,7 +57,7 @@ def abrir_tabla(tabla):
         )
         tablaMantenimiento.cargarNomCampos("MarCod", "MarNom", "MarEstReg")
     elif tabla == 'GZZ_ZONA':
-        tablaMantenimiento = f.FrameTabla(
+        tablaMantenimiento = fr.FrameTabla(
             master=window,
             text=titulo,
             nombreFrame1="Inputs",
@@ -64,7 +67,7 @@ def abrir_tabla(tabla):
         tablaMantenimiento.cargarNomCampos("ZonCod", "ZonDes", "ZonEstReg")
 
     elif tabla == 'GZZ_UNIDAD_MEDIDA':
-        tablaMantenimiento = f.FrameTabla(
+        tablaMantenimiento = fr.FrameTabla(
             master=window,
             text=titulo,
             nombreFrame1="Inputs",
@@ -74,7 +77,7 @@ def abrir_tabla(tabla):
         tablaMantenimiento.cargarNomCampos("UniMedCod", "UniMedNom", "EstRegCod")
     
     elif tabla == 'GZZ_EMPLEADO':
-        tablaMantenimiento = f.FrameTabla(
+        tablaMantenimiento = fr.FrameTabla(
             master=window,
             text=titulo,
             nombreFrame1="Inputs",
@@ -84,7 +87,7 @@ def abrir_tabla(tabla):
         tablaMantenimiento.cargarNomCampos("EmpCod", "EmpNom", "EstRegCod")
 
     elif tabla == 'GZZ_ESTADO_REGISTRO':
-        tablaMantenimiento = f.FrameTabla(
+        tablaMantenimiento = fr.FrameTabla(
             master=window,
             text=titulo,
             nombreFrame1="Inputs",
@@ -114,7 +117,7 @@ def abrir_tabla(tabla):
         tablaMantenimiento.cargarNomCampos("CliCod", "CliNom", "CliFecInsProAño", "CliFecInsProMes", "CliFecInsProDia", "CliDir", "CliZon", "CliEstReg")
 
     elif tabla == 'L1T_STOCK_ENTRADA_CAB':
-        tablaMantenimiento = fp.FrameTabla(
+        tablaMantenimiento = fc.FrameTabla(
             master=window,
             text=titulo,
             nombreFrame1="Inputs",
@@ -123,8 +126,18 @@ def abrir_tabla(tabla):
         )
         tablaMantenimiento.cargarNomCampos("StoEntCabCod","StoEntCabFecInsAño","StoEntCabFecInsMes","StoEntCabFecInsDia", "StoEntCabPro", "StoEntCanEstReg", "EmpCod")
 
+    elif tabla == 'L1T_STOCK_SALIDA_CAB':
+        tablaMantenimiento = fc.FrameTabla(
+            master=window,
+            text=titulo,
+            nombreFrame1="Inputs",
+            nombreFrame2="Registros",
+            datosConexion=datosConexion
+        )
+        tablaMantenimiento.cargarNomCampos("StoSalCabCod","StoSalCabFecInsAño","StoSalCabFecInsMes","StoSalCabFecInsDia", "StoSalCabCli", "StoSalCanEstReg", "EmpCod")
+
     elif tabla == 'L1M_ARTICULO':
-        tablaMantenimiento = fp.FrameTabla(
+        tablaMantenimiento = fa.FrameTabla(
             master=window,
             text=titulo,
             nombreFrame1="Inputs",
@@ -132,6 +145,26 @@ def abrir_tabla(tabla):
             datosConexion=datosConexion
         )
         tablaMantenimiento.cargarNomCampos("ArtCod","ArtNom","ArtCan","ArtDes", "ArtEstReg", "ArtMar", "UniMedCod")
+
+    elif tabla == 'L1T_STOCK_ENTRADA_DET':
+        tablaMantenimiento = fd.FrameTabla(
+            master=window,
+            text=titulo,
+            nombreFrame1="Inputs",
+            nombreFrame2="Registros",
+            datosConexion=datosConexion
+        )
+        tablaMantenimiento.cargarNomCampos("StoEntCabSec","StoEntDetCan","StoEntCabCod","StoEntDetArt", "StoEntCabEstReg")
+
+    elif tabla == 'L1T_STOCK_SALIDA_DET':
+        tablaMantenimiento = fd.FrameTabla(
+            master=window,
+            text=titulo,
+            nombreFrame1="Inputs",
+            nombreFrame2="Registros",
+            datosConexion=datosConexion
+        )
+        tablaMantenimiento.cargarNomCampos("StoSalCabSec","StoSalDetCan","StoSalCabCod","StoSalDetArt", "StoSalCabEstReg")
 
     # Poner título al padre
     tablaMantenimiento.master.title(f"Mantenimiento tabla {tabla.capitalize()}")
@@ -178,7 +211,7 @@ if flag:
     tabla_listbox.pack()
 
     # Agrega aquí las tablas que deseas mostrar en el listbox
-    tablas = ["GZZ_ESTADO_REGISTRO","GZZ_ZONA","GZZ_MARCA", "GZZ_UNIDAD_MEDIDA", "GZZ_EMPLEADO", "L1M_PROVEEDOR"]
+    tablas = ["GZZ_ESTADO_REGISTRO","GZZ_ZONA","GZZ_MARCA", "GZZ_UNIDAD_MEDIDA", "GZZ_EMPLEADO" , "L1M_ARTICULO","L1M_PROVEEDOR","L1M_CLIENTE", "L1T_STOCK_ENTRADA_CAB", "L1T_STOCK_SALIDA_CAB", "L1T_STOCK_ENTRADA_DET", "L1T_STOCK_SALIDA_DET"]
 
     for tabla in tablas:
         tabla_listbox.insert(tk.END, tabla)
