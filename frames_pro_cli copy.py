@@ -102,14 +102,8 @@ class FrameTabla(tkinter.LabelFrame):
                 textvariable=self.valorDia)
         dirEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
                 textvariable=self.valorDir)
-        
-        self.conexionTabla.connect()
-        query = "SELECT ZonDes FROM GZZ_ZONA WHERE ZonEstReg = 'A'"
-        zonas = self.conexionTabla.get_zonas_activas(query)
-        self.conexionTabla.close()
-        zonaEntrada = ttk.Combobox(self.registro, width=60, state="readonly", textvariable=self.valorZon)
-        zonaEntrada['values'] = zonas
-
+        zonaEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
+                textvariable=self.valorZon)
         estadoRegistroEntrada =tkinter.Entry(self.registro,width=2,state="disabled",
                 textvariable=self.valorEst)
         #posicinamos
