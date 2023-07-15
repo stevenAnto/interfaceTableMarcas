@@ -105,21 +105,29 @@ class FrameTabla(tkinter.LabelFrame):
                 textvariable=self.valorDir)
         
         
+        def obtener_indice_seleccionado(event):
+            indice_seleccionado = zonaEntrada.current()
+            if indice_seleccionado >= 0:
+                elemento_seleccionado = zonas[indice_seleccionado][1]
+                print(f"El elemento seleccionado es: {indice_seleccionado}")
+                # Realizar otras acciones con el elemento seleccionado
+                #indice_seleccionado = el valor cod entonces indice_seleccionado es el registro = zonas[indice_seleccionado][0] <-- ese es el zoncod para enviar
+            # Conectar a la base de datos y obtener las zonas
         self.conexionTabla.connect()
         query = "SELECT * FROM GZZ_ZONA WHERE ZonEstReg = 'A'"
         zonas = self.conexionTabla.get_zonas_activas(query)
         self.conexionTabla.close()
+
+            # Crear el Combobox de zonas
         zonaEntrada = ttk.Combobox(self.registro, width=60, state="readonly", textvariable=self.valorZon)
         zonaEntrada['values'] = [zona[1] for zona in zonas]
 
-        estadoRegistroEntrada =tkinter.Entry(self.registro,width=2,state="disabled",
-                textvariable=self.valorEst)
+        # Asociar el evento de selección a la función obtener_indice_seleccionado
+        zonaEntrada.bind("<<ComboboxSelected>>", obtener_indice_seleccionado)
+
+        estadoRegistroEntrada = tkinter.Entry(self.registro, width=2, state="disabled", textvariable=self.valorEst)
+
         
-
-        self.conexionTabla.connect()
-        self.elementosGrilla = self.conexionTabla.recuperarDatosTabla(self.titulo)
-        self.conexionTabla.close()
-
         #posicinamos
         codigoEntrada.grid(row=0,column=1, sticky="w")
         descripcionEntrada.grid(row=1,column=1, sticky="we")

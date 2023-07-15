@@ -72,11 +72,11 @@ class Connection:
             print("Failed to retrieve records:", error)
             return error
 
-    def get_zonas_activas(self, query: str) -> List[str]:
+    def get_zonas_activas(self, query: str) -> List:
         try:
             cursor = self.connection.cursor()
             cursor.execute(query)
-            zonas = [row[0] for row in cursor.fetchall()]
+            zonas = cursor.fetchall()
             return zonas
         except mysql.connector.Error as error:
             print("Failed to retrieve active zones:", error)

@@ -1,6 +1,6 @@
 import tkinter as tk
 import mysql.connector
-import frames_pro_cli as f
+import frames_pro_cli2 as f
 
 flag = False
 user = None
