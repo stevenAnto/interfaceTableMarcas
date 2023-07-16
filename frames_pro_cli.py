@@ -3,6 +3,7 @@ import connection as c
 from tkinter import ttk
 from typing import Dict, List, Tuple, Any
 
+zonacode=None
 
 
 class FrameTabla(tkinter.LabelFrame):
@@ -35,6 +36,7 @@ class FrameTabla(tkinter.LabelFrame):
         self.botones = tkinter.LabelFrame(self)
         self.botones.grid(row=2,column=0, sticky="nswe")
         
+
         #Base de datos a la cual se conecta
         self.host=datosConexion[0]
         self.port = datosConexion[1]
@@ -104,22 +106,30 @@ class FrameTabla(tkinter.LabelFrame):
         dirEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
                 textvariable=self.valorDir)
         
-        
+        def obtener_indice_seleccionado(event):
+            indice_seleccionado = zonaEntrada.current()
+            if indice_seleccionado >= 0:
+                global zonacode 
+                zonacode = zonas[indice_seleccionado][0]
+                print(f"El elemento seleccionado es: {indice_seleccionado}")
+                # Realizar otras acciones con el elemento seleccionado
+                #indice_seleccionado = el valor cod entonces indice_seleccionado es el registro = zonas[indice_seleccionado][0] <-- ese es el zoncod para enviar
+            # Conectar a la base de datos y obtener las zonas
         self.conexionTabla.connect()
         query = "SELECT * FROM GZZ_ZONA WHERE ZonEstReg = 'A'"
         zonas = self.conexionTabla.get_zonas_activas(query)
         self.conexionTabla.close()
-        zonaEntrada = ttk.Combobox(self.registro, width=60, state="readonly", textvariable=self.valorZon)
+
+            # Crear el Combobox de zonas
+        zonaEntrada = ttk.Combobox(self.registro, width=60, state="disabled", textvariable=self.valorZon)
         zonaEntrada['values'] = [zona[1] for zona in zonas]
 
-        estadoRegistroEntrada =tkinter.Entry(self.registro,width=2,state="disabled",
-                textvariable=self.valorEst)
+        # Asociar el evento de selección a la función obtener_indice_seleccionado
+        zonaEntrada.bind("<<ComboboxSelected>>", obtener_indice_seleccionado)
+
+        estadoRegistroEntrada = tkinter.Entry(self.registro, width=2, state="disabled", textvariable=self.valorEst)
+
         
-
-        self.conexionTabla.connect()
-        self.elementosGrilla = self.conexionTabla.recuperarDatosTabla(self.titulo)
-        self.conexionTabla.close()
-
         #posicinamos
         codigoEntrada.grid(row=0,column=1, sticky="w")
         descripcionEntrada.grid(row=1,column=1, sticky="we")
@@ -187,6 +197,7 @@ class FrameTabla(tkinter.LabelFrame):
     #funcions de los botones
     def adicionar(self):
         self.habilitar()
+        self.valorZon.set(zonacode)
         self.valorEst.set("A")
         self.estadoBotonActualizar="adicionar"
 
@@ -198,7 +209,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="inactivar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],valores[6],"I")
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],zonacode,"I")
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
 
@@ -210,7 +221,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="reactivar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],valores[6],"A")
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],zonacode,"A")
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
 
@@ -222,7 +233,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="eliminar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],valores[6],"*")
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],zonacode,"*")
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
 
@@ -234,7 +245,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="modificar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],valores[6],valores[7])
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],zonacode,valores[7])
             inputs = self.hijosFrame(self.registro)
             inputs[9]["state"]="normal"
             inputs[10]["state"]="normal"
@@ -263,7 +274,7 @@ class FrameTabla(tkinter.LabelFrame):
         mesInput = inputs[11].get()
         diaInput = inputs[12].get()
         dirInput = inputs[13].get()
-        zonInput = inputs[14].get()
+        zonInput = zonacode
         estadoRegistroInput = inputs[15].get()
         print(codigoInput,descripcionInput,anioInput,mesInput,diaInput,dirInput,zonInput,estadoRegistroInput)
         print(self.campo1,self.campo2,self.campo3,self.campo4,self.campo5,self.campo6,self.campo7,self.campo8)

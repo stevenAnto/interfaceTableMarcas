@@ -3,6 +3,9 @@ import connection as c
 from tkinter import ttk
 from typing import Dict, List, Tuple, Any
 
+procode=None
+empcode=None
+
 class FrameTabla(tkinter.LabelFrame):
     #nombreFrame1 es el nombre del primer Frame, si el primer Frame es registro y el segundo podria ser grilla o el que crea conveniente
     def __init__(self,nombreFrame1:str,nombreFrame2:str,master:Any=None,datosConexion:Tuple=None, **kwargs):
@@ -30,10 +33,7 @@ class FrameTabla(tkinter.LabelFrame):
         self.tabla.grid(row=1,column=0)
         self.botones = tkinter.LabelFrame(self)
         self.botones.grid(row=2,column=0, sticky="nswe")
-        self.widgetsRegistro()
-        self.widgetsTabla()
-        self.widgetsBotones()
-        self.elementosGrilla = [];
+        
         #Base de datos a la cual se conecta
         self.host=datosConexion[0]
         self.port = datosConexion[1]
@@ -41,6 +41,10 @@ class FrameTabla(tkinter.LabelFrame):
         self.password = datosConexion[3]
         self.database = datosConexion[4]
         self.conexionTabla = c.Connection(self.host,self.user,self.password,self.database)
+        self.widgetsRegistro()
+        self.widgetsTabla()
+        self.widgetsBotones()
+        self.elementosGrilla = [];
         self.actualizarElementosGrilla()
         self.llenarTodaGrilla()
 
@@ -94,12 +98,48 @@ class FrameTabla(tkinter.LabelFrame):
                 textvariable=self.valorMes)
         diaEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
                 textvariable=self.valorDia)
-        proveedorEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
-                textvariable=self.valorPro)
+        
         estadoRegistroEntrada =tkinter.Entry(self.registro,width=2,state="disabled",
                 textvariable=self.valorEst)
-        empEntrada =tkinter.Entry(self.registro,width=60,state="disabled",
-                textvariable=self.valorEmp)
+        
+        def obtener_marca(event):
+            indice_seleccionado = proveedorEntrada.current()
+            if indice_seleccionado >= 0:
+                global procodecode 
+                marcacode = marcas[indice_seleccionado][0]
+                print(f"El elemento seleccionado es: {indice_seleccionado}")
+                
+        self.conexionTabla.connect()
+        query = "SELECT * FROM L1M_PROVEEDOR WHERE ProEstReg = 'A'"
+        marcas = self.conexionTabla.get_zonas_activas(query)
+        self.conexionTabla.close()
+
+            # Crear el Combobox de zonas
+        proveedorEntrada = ttk.Combobox(self.registro, width=60, state="disabled", textvariable=self.valorPro)
+        proveedorEntrada['values'] = [marca[1] for marca in marcas]
+
+        # Asociar el evento de selección a la función obtener_indice_seleccionado
+        proveedorEntrada.bind("<<ComboboxSelected>>", obtener_marca)
+
+        def obtener_uni(event):
+            indice_seleccionado = empEntrada.current()
+            if indice_seleccionado >= 0:
+                global empcode 
+                empcode = unis[indice_seleccionado][0]
+                print(f"El elemento seleccionado es: {indice_seleccionado}")
+                
+        self.conexionTabla.connect()
+        query = "SELECT * FROM GZZ_EMPLEADO WHERE EstRegCod = 'A'"
+        unis = self.conexionTabla.get_zonas_activas(query)
+        self.conexionTabla.close()
+
+            # Crear el Combobox de zonas
+        empEntrada = ttk.Combobox(self.registro, width=60, state="disabled", textvariable=self.valorEmp)
+        empEntrada['values'] = [uni[1] for uni in unis]
+
+        # Asociar el evento de selección a la función obtener_indice_seleccionado
+        empEntrada.bind("<<ComboboxSelected>>", obtener_uni)
+
         #posicinamos
         codigoEntrada.grid(row=0,column=1, sticky="w")
         anioEntrada.grid(row=1,column=1, sticky="we")
@@ -176,7 +216,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="inactivar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],"I",valores[6])
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],procode,"I",empcode)
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
 
@@ -188,7 +228,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="reactivar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],"A",valores[6])
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],procode,"A",empcode)
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
 
@@ -200,7 +240,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="eliminar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],"*",valores[6])
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],procode,"*",empcode)
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
 
@@ -212,12 +252,13 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="modificar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],valores[6])
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],procode,valores[5],empcode)
             inputs = self.hijosFrame(self.registro)
             inputs[8]["state"]="normal"
             inputs[9]["state"]="normal"
             inputs[10]["state"]="normal"
-            inputs[11]["state"]="normal"
+            inputs[11]["state"]="disabled"
+            inputs[12]["state"]="normal"
             inputs[13]["state"]="normal"
 
         else:
@@ -238,10 +279,9 @@ class FrameTabla(tkinter.LabelFrame):
         anioInput = inputs[8].get()
         mesInput = inputs[9].get()
         diaInput = inputs[10].get()
-        proInput = inputs[11].get()
+        proInput = procode
         estadoRegistroInput = inputs[12].get()
-        empInput = inputs[13].get()
-
+        empInput = empcode
         print(codigoInput,anioInput,mesInput,diaInput,proInput,estadoRegistroInput,empInput)
         print(self.campo1,self.campo2,self.campo3,self.campo4,self.campo5,self.campo6,self.campo7)
         diccionario ={
@@ -350,12 +390,11 @@ class FrameTabla(tkinter.LabelFrame):
         print("se habilito inputs")
         inputs = self.hijosFrame(self.registro)
         print(len(inputs))
-        inputs[7]["state"]="normal"
         inputs[8]["state"]="normal"
         inputs[9]["state"]="normal"
         inputs[10]["state"]="normal"
-        inputs[11]["state"]="normal"
-        inputs[12]["state"]="disabled"
+        inputs[11]["state"]="disabled"
+        inputs[12]["state"]="normal"
         inputs[13]["state"]="normal"
 
 

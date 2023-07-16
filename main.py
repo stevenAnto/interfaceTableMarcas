@@ -1,6 +1,6 @@
 import tkinter as tk
 import mysql.connector
-import frames_pro_cli2 as f
+import frames_det as f
 
 flag = False
 user = None
@@ -60,7 +60,7 @@ if flag:
     user = user
     password = password
     database = 'control_stock_libreria'
-    titulo = "L1M_PROVEEDOR"
+    titulo = "L1T_STOCK_ENTRADA_DET"
     window = tk.Tk()
     datosConexion = (host, port, user, password, database)
 
@@ -71,7 +71,7 @@ if flag:
         nombreFrame2="GAAax2",
         datosConexion=datosConexion
     )
-    tablaMantenimiento.cargarNomCampos("ProCod", "ProNom", "ProFecInsProAño", "ProFecInsProMes", "ProFecInsProDia", "ProDir", "ProZon", "ProEstReg")
+    tablaMantenimiento.cargarNomCampos("StoEntCabSec","StoEntDetCan","StoEntCabCod","StoEntDetArt", "StoEntCabEstReg")
 
     # Poner título al padre
     tablaMantenimiento.master.title("Mantenimiento tabla Zonas")

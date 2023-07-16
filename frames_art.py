@@ -3,6 +3,8 @@ import connection as c
 from tkinter import ttk
 from typing import Dict, List, Tuple, Any
 
+marcacode=None
+unimedcode=None
 class FrameTabla(tkinter.LabelFrame):
 
     def __init__(self, nombreFrame1: str, nombreFrame2: str, master: Any = None, datosConexion: Tuple = None, **kwargs):
@@ -30,10 +32,7 @@ class FrameTabla(tkinter.LabelFrame):
         self.tabla.grid(row=1, column=0)
         self.botones = tkinter.LabelFrame(self)
         self.botones.grid(row=2, column=0, sticky="nswe")
-        self.widgetsRegistro()
-        self.widgetsTabla()
-        self.widgetsBotones()
-        self.elementosGrilla = [];
+
 
         self.host = datosConexion[0]
         self.port = datosConexion[1]
@@ -41,6 +40,10 @@ class FrameTabla(tkinter.LabelFrame):
         self.password = datosConexion[3]
         self.database = datosConexion[4]
         self.conexionTabla = c.Connection(self.host, self.user, self.password, self.database)
+        self.widgetsRegistro()
+        self.widgetsTabla()
+        self.widgetsBotones()
+        self.elementosGrilla = [];
         self.actualizarElementosGrilla()
         self.llenarTodaGrilla()
 
@@ -91,10 +94,44 @@ class FrameTabla(tkinter.LabelFrame):
         cantidadEntrada = tkinter.Entry(self.registro, width=60, state="disabled", textvariable=self.valorCan)
         descripcionEntrada = tkinter.Entry(self.registro, width=60, state="disabled", textvariable=self.valorDes)
         estadoRegistroEntrada = tkinter.Entry(self.registro, width=2, state="disabled", textvariable=self.valorEst)
-        marcaEntrada = tkinter.Entry(self.registro, width=60, state="disabled", textvariable=self.valorMar)
-        unidadMedidaEntrada = tkinter.Entry(self.registro, width=60, state="disabled", textvariable=self.valorUniMedCod)
 
+        def obtener_marca(event):
+            indice_seleccionado = marcaEntrada.current()
+            if indice_seleccionado >= 0:
+                global marcacode 
+                marcacode = marcas[indice_seleccionado][0]
+                print(f"El elemento seleccionado es: {indice_seleccionado}")
+                
+        self.conexionTabla.connect()
+        query = "SELECT * FROM GZZ_MARCA WHERE MarEstReg = 'A'"
+        marcas = self.conexionTabla.get_zonas_activas(query)
+        self.conexionTabla.close()
 
+            # Crear el Combobox de zonas
+        marcaEntrada = ttk.Combobox(self.registro, width=60, state="disabled", textvariable=self.valorMar)
+        marcaEntrada['values'] = [marca[1] for marca in marcas]
+
+        # Asociar el evento de selección a la función obtener_indice_seleccionado
+        marcaEntrada.bind("<<ComboboxSelected>>", obtener_marca)
+
+        def obtener_uni(event):
+            indice_seleccionado = unidadMedidaEntrada.current()
+            if indice_seleccionado >= 0:
+                global unimedcode 
+                unimedcode = unis[indice_seleccionado][0]
+                print(f"El elemento seleccionado es: {indice_seleccionado}")
+                
+        self.conexionTabla.connect()
+        query = "SELECT * FROM GZZ_UNIDAD_MEDIDA WHERE EstRegCod = 'A'"
+        unis = self.conexionTabla.get_zonas_activas(query)
+        self.conexionTabla.close()
+
+            # Crear el Combobox de zonas
+        unidadMedidaEntrada = ttk.Combobox(self.registro, width=60, state="disabled", textvariable=self.valorUniMedCod)
+        unidadMedidaEntrada['values'] = [uni[1] for uni in unis]
+
+        # Asociar el evento de selección a la función obtener_indice_seleccionado
+        unidadMedidaEntrada.bind("<<ComboboxSelected>>", obtener_uni)
 
 
 
@@ -160,6 +197,7 @@ class FrameTabla(tkinter.LabelFrame):
     #funcions de los botones
     def adicionar(self):
         self.habilitar()
+
         self.valorEst.set("A")
         self.estadoBotonActualizar="adicionar"
 
@@ -171,7 +209,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="inactivar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],"I",valores[5],valores[6])
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],"I",marcacode,unimedcode)
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
 
@@ -183,7 +221,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="reactivar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],"A",valores[5],valores[6])
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],"A",marcacode,unimedcode)
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
 
@@ -195,7 +233,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="eliminar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],"*",valores[5],valores[6])
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],"*",marcacode,unimedcode)
         else:
             self.mostrarVentanaEmergente("no hay seleciion")
 
@@ -207,7 +245,7 @@ class FrameTabla(tkinter.LabelFrame):
             self.estadoBotonActualizar="modificar"
             itemp =seleccion[0]
             valores = grilla.item(itemp,"values")
-            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],valores[5],valores[6])
+            self.putTextInputs(valores[0],valores[1],valores[2],valores[3],valores[4],marcacode,unimedcode)
             inputs = self.hijosFrame(self.registro)
             inputs[8]["state"]="normal"
             inputs[9]["state"]="normal"
@@ -235,8 +273,8 @@ class FrameTabla(tkinter.LabelFrame):
         cantidadInput = inputs[9].get()
         descripcionInput = inputs[10].get()
         estadoRegistroInput = inputs[11].get()
-        marcaInput = inputs[12].get()
-        unidadMedidaInput = inputs[13].get()
+        marcaInput = marcacode
+        unidadMedidaInput = unimedcode
         print(codigoInput,nombreInput,cantidadInput,descripcionInput,estadoRegistroInput,marcaInput,unidadMedidaInput)
         print(self.campo1,self.campo2,self.campo3,self.campo4,self.campo5,self.campo6,self.campo7)
         diccionario ={
