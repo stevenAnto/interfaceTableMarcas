@@ -210,3 +210,51 @@ INSERT INTO l1t_stock_salida_det(StoSalDetSec,StoSalDetCan,StoSalCabCod,StoSalDe
 (33,1,207,26,'A'),
 (34,1,207,27,'A'),
 (35,2,207,29,'A');
+--Otros--
+--Script para mostrar tabla detalle, pero con el nombre del articulo
+SELECT l1t_stock_salida_det.StoSalDetSec,l1t_stock_salida_det.StoSalDetCan,StoSalCabCod,l1m_articulo.ArtNom,StoSalCabEstReg
+FROM l1m_articulo
+INNER JOIN l1t_stock_salida_det
+ON l1m_articulo.ArtCod=l1t_stock_salida_det.StoSalDetArt;
+
+--Ver cliente por zonas
+SELECT l1m_cliente.CliCod,l1m_cliente.CliNom,gzz_zona.ZonDes,l1m_cliente.CliEstReg
+FROM l1m_cliente
+INNER JOIN gzz_zona
+ON l1m_cliente.CliZon=gzz_zona.ZonCod;
+
+--Hacer un join de tres tablas
+CREATE VIEW STOCK AS
+SELECT l1m_articulo.ArtCod,l1m_articulo.ArtNom,l1m_articulo.ArtCan,l1m_proveedor.ProNom
+FROM l1m_articulo
+JOIN l1m_proveedor
+ON
+
+
+
+
+
+--Se creo vista de aritculos con proveedores
+CREATE VIEW STOCKR AS
+SELECT l1m_articulo.ArtCod,l1m_articulo.ArtNom,l1m_articulo.ArtCan,l1m_proveedor.ProNom
+FROM l1m_articulo
+JOIN l1m_proveedor
+JOIN l1t_stock_entrada_cab
+ON l1t_stock_entrada_cab.StoEntCabPro=l1m_proveedor.ProCod;
+
+--Vista de Productos con proveedores
+CREATE VIEW STOCK_PRO AS
+SELECT DISTINCT ArtCod,ArtNom,ArtCan,ProNom
+FROM STOCKR;
+
+--Vista De total entradas
+CREATE VIEW TOTAL_ENTRADA AS
+SELECT StoEntDetArt, SUM(StoEntDetCan) AS Total_Ingresado
+FROM l1t_stock_entrada_det
+GROUP BY StoEntDetArt;
+--Vista de total entradas con nombre
+CREATE VIEW TOTAL_ENTRADA_NOM AS
+SELECT TOTAL_ENTRADA.StoEntDetArt,l1m_articulo.ArtNom,TOTAL_ENTRADA.Total_Ingresado
+FROM TOTAL_ENTRADA
+JOIN l1m_articulo
+ON TOTAL_ENTRADA.StoEntDetArt=l1m_articulo.ArtCod;
