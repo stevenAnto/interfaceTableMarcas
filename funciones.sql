@@ -1,3 +1,4 @@
+--Otro
 --Otros--
 --Script para mostrar tabla detalle, pero con el nombre del articulo
 SELECT l1t_stock_salida_det.StoSalDetSec,l1t_stock_salida_det.StoSalDetCan,StoSalCabCod,l1m_articulo.ArtNom,StoSalCabEstReg
@@ -74,7 +75,7 @@ FOR EACH ROW
 BEGIN
   UPDATE l1m_articulo
   SET ArtCan = ArtCan - NEW.StoSalDetCan
-  WHERE ArtCod = NEW.StoSalDetCan;
+  WHERE ArtCod = NEW.StoSalDetArt;
 END;
 //
 DELIMITER ;
@@ -95,6 +96,27 @@ BEGIN
   SELECT * FROM STOCK_PRO
   WHERE ArtCan <= COTA
   ORDER BY ArtCan DESC;
+END//
+
+DELIMITER ;
+
+--Auxiliares
+DELIMITER //
+CREATE PROCEDURE VER_MAESTRAS()
+BEGIN
+  SELECT * FROM l1m_proveedor;
+  SELECT * FROM l1m_cliente;
+  SELECT * FROM l1m_articulo;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE VER_TRANSA()
+BEGIN
+  SELECT * FROM l1t_stock_entrada_cab;
+  SELECT * FROM l1t_stock_entrada_det;
+  SELECT * FROM l1t_stock_salida_cab;
+  SELECT * FROM l1t_stock_salida_det;
 END//
 
 DELIMITER ;
