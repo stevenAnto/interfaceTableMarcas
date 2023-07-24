@@ -13,7 +13,7 @@
 ![vacio Registro](imagenes/vacio1.png)
 ![Grilla llena](imagenes/lleno.png)
 
-## Instrucciones para probar los triggers
+## Instrucciones para probar los triggers,vistas y procedimientos almacenados
 - En Mysql ejecutar el archivo scriptBase.sql, el cual creara el modelo
-- Para poblas la base de datos, usar el archivo llenarBDLimpio.sql, el cual llenara todas las tablas(excepto Estado de Registro, que ya esta llenado)
+- Para poblar la base de datos, usar el archivo llenarBDLimpio.sql, el cual llenara todas las tablas(excepto Estado de Registro, que ya esta llenado)
 - Para las vistas, triggers y procedimientos almacenados usar funciones.sql. (Borrar comentarios del archivo)
